@@ -11,4 +11,7 @@ target 'Messenger' do
   pod 'Firebase/Storage'
   pod 'Firebase/Auth'
 
+  pod 'RxSwift'
+  pod 'RxCocoa'
+
 end

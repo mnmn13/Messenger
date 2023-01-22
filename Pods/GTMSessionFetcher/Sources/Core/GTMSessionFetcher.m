@@ -18,6 +18,9 @@
 #endif
 
 #import "GTMSessionFetcher/GTMSessionFetcher.h"
+#import "GTMSessionFetcher/GTMSessionFetcherService.h"
+#import "GTMSessionFetcherService+Internal.h"
+
 #if TARGET_OS_OSX && GTMSESSION_RECONNECT_BACKGROUND_SESSIONS_ON_LAUNCH
 // To reconnect background sessions on Mac outside +load requires importing and linking
 // AppKit to access the NSApplicationDidFinishLaunching symbol.
@@ -227,11 +230,13 @@ static GTMSessionFetcherTestBlock _Nullable gGlobalTestBlock;
   dispatch_group_t _callbackGroup;   // read-only after creation
   NSOperationQueue *_delegateQueue;  // immutable after beginFetch
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
   id<GTMFetcherAuthorizationProtocol> _authorizer;  // immutable after beginFetch
+#pragma clang diagnostic pop
 
   // The service object that created and monitors this fetcher, if any.
-  id<GTMSessionFetcherServiceProtocol>
-      _service;  // immutable; set by the fetcher service upon creation
+  GTMSessionFetcherService *_service;  // immutable; set by the fetcher service upon creation
   NSString *_serviceHost;
   NSInteger _servicePriority;  // immutable after beginFetch
   BOOL _hasStoppedFetching;    // counterpart to _initialBeginFetchDate
@@ -646,74 +651,15 @@ static GTMSessionFetcherTestBlock _Nullable gGlobalTestBlock;
 
   self.canShareSession = (_service != nil) && !isRecreatingSession && !self.usingBackgroundSession;
 
-  if (!self.session && self.canShareSession) {
-    self.session = [_service sessionForFetcherCreation];
-    // If _session is nil, then the service's session creation semaphore will block
-    // until this fetcher invokes fetcherDidCreateSession: below, so this *must* invoke
-    // that method, even if the session fails to be created.
-  }
-
   if (!self.session) {
-    // Create a session.
-    if (!_configuration) {
-      if (priorSessionIdentifier || self.usingBackgroundSession) {
-        NSString *sessionIdentifier = priorSessionIdentifier;
-        if (!sessionIdentifier) {
-          sessionIdentifier = [self createSessionIdentifierWithMetadata:nil];
-        }
-        NSMapTable *sessionIdentifierToFetcherMap = [[self class] sessionIdentifierToFetcherMap];
-        [sessionIdentifierToFetcherMap setObject:self forKey:self.sessionIdentifier];
-
-        _configuration = [NSURLSessionConfiguration
-            backgroundSessionConfigurationWithIdentifier:sessionIdentifier];
-        self.usingBackgroundSession = YES;
-        self.canShareSession = NO;
-      } else {
-        _configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
-      }
-#if !GTM_ALLOW_INSECURE_REQUESTS
-#if GTM_SDK_REQUIRES_TLSMINIMUMSUPPORTEDPROTOCOLVERSION
-      _configuration.TLSMinimumSupportedProtocolVersion = tls_protocol_version_TLSv12;
-#elif GTM_SDK_SUPPORTS_TLSMINIMUMSUPPORTEDPROTOCOLVERSION
-      if (@available(iOS 13, tvOS 13, macOS 10.15, *)) {
-        _configuration.TLSMinimumSupportedProtocolVersion = tls_protocol_version_TLSv12;
-      } else {
-        _configuration.TLSMinimumSupportedProtocol = kTLSProtocol12;
-      }
-#else
-      _configuration.TLSMinimumSupportedProtocol = kTLSProtocol12;
-#endif  // GTM_SDK_REQUIRES_TLSMINIMUMSUPPORTEDPROTOCOLVERSION
-#endif
-    }  // !_configuration
-    _configuration.HTTPCookieStorage = self.cookieStorage;
-
-    if (_configurationBlock) {
-      _configurationBlock(self, _configuration);
-    }
-
-    id<NSURLSessionDelegate> delegate = [_service sessionDelegate];
-    if (!delegate || !self.canShareSession) {
-      delegate = self;
-    }
-    self.session = [NSURLSession sessionWithConfiguration:_configuration
-                                                 delegate:delegate
-                                            delegateQueue:self.sessionDelegateQueue];
-    GTMSESSION_ASSERT_DEBUG(self.session, @"Couldn't create session");
-
-    // Tell the service about the session created by this fetcher.  This also signals the
-    // service's semaphore to allow other fetchers to request this session.
-    [_service fetcherDidCreateSession:self];
-
-    // If this assertion fires, the client probably tried to use a session identifier that was
-    // already used. The solution is to make the client use a unique identifier (or better yet let
-    // the session fetcher assign the identifier).
-    GTMSESSION_ASSERT_DEBUG(self.session.delegate == delegate, @"Couldn't assign delegate.");
-
-    if (self.session) {
-      BOOL isUsingSharedDelegate = (delegate != self);
-      if (!isUsingSharedDelegate) {
-        _shouldInvalidateSession = YES;
-      }
+    if (self.canShareSession) {
+      self.session = [_service
+          sessionWithCreationBlock:^NSURLSession *(id<NSURLSessionDelegate> sessionDelegate) {
+            return [self createSessionWithDelegate:sessionDelegate
+                                 sessionIdentifier:priorSessionIdentifier];
+          }];
+    } else {
+      self.session = [self createSessionWithDelegate:self sessionIdentifier:priorSessionIdentifier];
     }
   }
 
@@ -989,6 +935,73 @@ static GTMSessionFetcherTestBlock _Nullable gGlobalTestBlock;
     // of the session task.
     [newSessionTask resume];
   }
+}
+
+// Helper method to create a new NSURLSession for this fetcher. Because the original
+// implementation had this code inline, marking direct to avoid any danger of subclasses
+// overriding the behavior.
+- (NSURLSession *)createSessionWithDelegate:(id<NSURLSessionDelegate>)sessionDelegate
+                          sessionIdentifier:(nullable NSString *)priorSessionIdentifier
+    __attribute__((objc_direct)) {
+  // Create a session.
+  if (!_configuration) {
+    if (priorSessionIdentifier || self.usingBackgroundSession) {
+      NSString *sessionIdentifier = priorSessionIdentifier;
+      if (!sessionIdentifier) {
+        sessionIdentifier = [self createSessionIdentifierWithMetadata:nil];
+      }
+      NSMapTable *sessionIdentifierToFetcherMap = [[self class] sessionIdentifierToFetcherMap];
+      [sessionIdentifierToFetcherMap setObject:self forKey:self.sessionIdentifier];
+
+      _configuration = [NSURLSessionConfiguration
+          backgroundSessionConfigurationWithIdentifier:sessionIdentifier];
+      self.usingBackgroundSession = YES;
+      self.canShareSession = NO;
+    } else {
+      _configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    }
+#if !GTM_ALLOW_INSECURE_REQUESTS
+#if GTM_SDK_REQUIRES_TLSMINIMUMSUPPORTEDPROTOCOLVERSION
+    _configuration.TLSMinimumSupportedProtocolVersion = tls_protocol_version_TLSv12;
+#elif GTM_SDK_SUPPORTS_TLSMINIMUMSUPPORTEDPROTOCOLVERSION
+    if (@available(iOS 13, tvOS 13, macOS 10.15, *)) {
+      _configuration.TLSMinimumSupportedProtocolVersion = tls_protocol_version_TLSv12;
+    } else {
+      _configuration.TLSMinimumSupportedProtocol = kTLSProtocol12;
+    }
+#else
+    _configuration.TLSMinimumSupportedProtocol = kTLSProtocol12;
+#endif  // GTM_SDK_REQUIRES_TLSMINIMUMSUPPORTEDPROTOCOLVERSION
+#endif
+  }  // !_configuration
+  _configuration.HTTPCookieStorage = self.cookieStorage;
+
+  if (_configurationBlock) {
+    _configurationBlock(self, _configuration);
+  }
+
+  id<NSURLSessionDelegate> delegate = sessionDelegate;
+  if (!delegate || !self.canShareSession) {
+    delegate = self;
+  }
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:_configuration
+                                                        delegate:delegate
+                                                   delegateQueue:self.sessionDelegateQueue];
+  GTMSESSION_ASSERT_DEBUG(session, @"Couldn't create session");
+
+  // If this assertion fires, the client probably tried to use a session identifier that was
+  // already used. The solution is to make the client use a unique identifier (or better yet let
+  // the session fetcher assign the identifier).
+  GTMSESSION_ASSERT_DEBUG(session.delegate == delegate, @"Couldn't assign delegate.");
+
+  if (session) {
+    BOOL isUsingSharedDelegate = (delegate != self);
+    if (!isUsingSharedDelegate) {
+      _shouldInvalidateSession = YES;
+    }
+  }
+
+  return session;
 }
 
 NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **outError) {
@@ -1678,8 +1691,22 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
   GTMSessionCheckNotSynchronized(self);
 
   id authorizer = self.authorizer;
-  SEL asyncAuthSel = @selector(authorizeRequest:delegate:didFinishSelector:);
-  if ([authorizer respondsToSelector:asyncAuthSel]) {
+  // Prefer the block-based implementation. This *is* a change in behavior, but if authorizers
+  // previously provided this method they would presumably assume they can be used for the same
+  // requests as before.
+  if ([authorizer respondsToSelector:@selector(authorizeRequest:completionHandler:)]) {
+    // It's unknown how long an authorizer maintains ownership of the provided block, so
+    // avoid potential retain cycles on self and the authorizer.
+    __weak __typeof__(self) weakSelf = self;
+    NSMutableURLRequest *mutableRequest = [self.request mutableCopy];
+    [authorizer authorizeRequest:mutableRequest
+               completionHandler:^(NSError *_Nullable error) {
+                 [weakSelf authorizer:nil
+                               request:mutableRequest
+                     finishedWithError:error];
+               }];
+  } else if ([authorizer respondsToSelector:@selector(authorizeRequest:
+                                                              delegate:didFinishSelector:)]) {
     SEL callbackSel = @selector(authorizer:request:finishedWithError:);
     NSMutableURLRequest *mutableRequest = [self.request mutableCopy];
     [authorizer authorizeRequest:mutableRequest delegate:self didFinishSelector:callbackSel];
@@ -1692,14 +1719,17 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
   }
 }
 
-- (void)authorizer:(id<GTMFetcherAuthorizationProtocol>)auth
-              request:(NSMutableURLRequest *)authorizedRequest
-    finishedWithError:(NSError *)error {
+// The authorizer parameter is unused, and the block-based callback will never pass
+// non-nil; the field is only for the deprecated selector-based implementation for
+// legacy reasons.
+- (void)authorizer:(nullable id __unused)auth
+              request:(nullable NSMutableURLRequest *)authorizedRequest
+    finishedWithError:(nullable NSError *)error {
   GTMSessionCheckNotSynchronized(self);
 
   if (error != nil) {
     // We can't fetch without authorization
-    [self failToBeginFetchWithError:error];
+    [self failToBeginFetchWithError:(NSError *_Nonnull)error];
   } else {
     @synchronized(self) {
       _request = authorizedRequest;
@@ -1954,7 +1984,7 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
 - (void)stopFetchReleasingCallbacks:(BOOL)shouldReleaseCallbacks {
   [self removePersistedBackgroundSessionFromDefaults];
 
-  id<GTMSessionFetcherServiceProtocol> service;
+  GTMSessionFetcherService *service;
   NSMutableURLRequest *request;
 
   // If the task or the retry timer is all that's retaining the fetcher,
@@ -3796,6 +3826,8 @@ static NSMutableDictionary *gSystemCompletionHandlers = nil;
   }  // @synchronized(self)
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 - (nullable id<GTMFetcherAuthorizationProtocol>)authorizer {
   @synchronized(self) {
     GTMSessionMonitorSynchronized(self);
@@ -3818,6 +3850,7 @@ static NSMutableDictionary *gSystemCompletionHandlers = nil;
     }
   }  // @synchronized(self)
 }
+#pragma clang diagnostic pop
 
 - (nullable NSData *)downloadedData {
   @synchronized(self) {
@@ -4049,10 +4082,8 @@ static NSMutableDictionary *gSystemCompletionHandlers = nil;
       // On both the simulator and devices, the path can change to the download file, but the name
       // shouldn't change. Technically, this isn't supported in the fetcher, but the change of
       // URL is expected to happen only across development runs through Xcode.
-      NSString *oldFilename = [_destinationFileURL lastPathComponent];
-      NSString *newFilename = [destinationFileURL lastPathComponent];
-#pragma unused(oldFilename)
-#pragma unused(newFilename)
+      __unused NSString *oldFilename = [_destinationFileURL lastPathComponent];
+      __unused NSString *newFilename = [destinationFileURL lastPathComponent];
       GTMSESSION_ASSERT_DEBUG(
           [oldFilename isEqualToString:newFilename],
           @"Destination File URL cannot be changed after session identifier has been created");
