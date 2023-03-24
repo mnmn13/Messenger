@@ -5,7 +5,11 @@
 //  Created by MN on 17.11.2022.
 //
 
+/*
+
+
 import UIKit
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -20,12 +24,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
-        let navigationController = UINavigationController()
-        let mainStoryboard = UIStoryboard(name: "PageWithChats", bundle: .main)
-        let mainVC = mainStoryboard.instantiateViewController(withIdentifier: "pageWithChats")
-        navigationController.setViewControllers([mainVC], animated: true)
+        
+        
+        if FirebaseAuth.Auth.auth().currentUser == nil {
+            
+            let storyboard = UIStoryboard(name: "Login", bundle: .main)
+            let vc = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
+            let nav = UINavigationController(rootViewController: vc)
+            window?.rootViewController = nav
+        } else {
+            window?.rootViewController = TabbarController()
+        }
 
-        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
 
     }
@@ -60,4 +70,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
+//MARK: - keyWindow
+extension UIApplication {
+    var keyWindow: UIWindow? {
+        // Get connected scenes
+        return UIApplication.shared.connectedScenes
+            // Keep only active scenes, onscreen and visible to the user
+            .filter { $0.activationState == .foregroundActive }
+            // Keep only the first `UIWindowScene`
+            .first(where: { $0 is UIWindowScene })
+            // Get its associated windows
+            .flatMap({ $0 as? UIWindowScene })?.windows
+            // Finally, keep only the key window
+            .first(where: \.isKeyWindow)
+    }
+}
 
+*/

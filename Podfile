@@ -14,4 +14,9 @@ target 'Messenger' do
   pod 'RxSwift'
   pod 'RxCocoa'
 
+  pod 'MessageKit'
+  pod 'JGProgressHUD'
+  pod 'RealmSwift'
+  pod 'SDWebImage'
+
 end

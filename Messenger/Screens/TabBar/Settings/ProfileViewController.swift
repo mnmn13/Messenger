@@ -1,5 +1,5 @@
 //
-//  NewChatViewController.swift
+//  ProfileViewController.swift
 //  Messenger
 //
 //  Created by MN on 21.01.2023.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewChatViewController: UIViewController {
+class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
