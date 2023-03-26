@@ -32,7 +32,7 @@ class Time {
         return string
         
     }
-    
+    /// Returns date in string format dd,MM,yy,HH,mm,ss
     static func stringToDate(string: String) -> Date {
         
         let formatter = DateFormatter()
@@ -43,13 +43,18 @@ class Time {
         return date
         
     }
-    
+    /// Returns string in format HH:mm
     static func dateToStringLastActivity(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
         let string = formatter.string(from: date)
         return string
     }
+    /// Returns string from timeInterval (Double)
+    static func timeIntervalToString(dateDouble: Double) -> String { dateToString(date: Date(timeIntervalSince1970: dateDouble)) }
+    /// Returns TimeInterval (Double) since 1970
+    static func timeIntervalStringToTimeInterval(dateString: String) -> TimeInterval { stringToDate(string: dateString).timeIntervalSince1970 }
     
+    static func timeIntervalToDate(time: TimeInterval) -> Date { Date(timeIntervalSince1970: time) }
     
 }

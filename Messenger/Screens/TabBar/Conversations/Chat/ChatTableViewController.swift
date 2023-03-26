@@ -11,44 +11,68 @@ import InputBarAccessoryView
 
 class ChatTableViewController: MessagesViewController {
     
+    let refrechController = UIRefreshControl()
+    
     var viewModel: ChatViewModelType!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
+        navigationController?.navigationBar.barTintColor = .white
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         bindForReload()
+        bindForReloadAndKeepOffset()
         setupMessageDelegate()
         view.backgroundColor = .white
         title = viewModel.getTitle()
 //        scrollsToLastItemOnKeyboardBeginsEditing = true
         showMessageTimestampOnSwipeLeft = true
-        scrollsToLastItemOnKeyboardBeginsEditing = true
-        maintainPositionOnKeyboardFrameChanged = true
-        messageInputBar.inputTextView.becomeFirstResponder()
-        navigationController?.navigationBar.backgroundColor = .white
-        typingIndicatorViewTopInset(in: messagesCollectionView)
-        
+//        navigationController?.navigationBar.barTintColor = .brown
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     func bindForReload() {
         viewModel.onReload = { [weak self] in
             DispatchQueue.main.async {
-                self?.messagesCollectionView.reloadDataAndKeepOffset()
+//                self?.messagesCollectionView.reloadDataAndKeepOffset()
+                self?.messagesCollectionView.reloadData()
+                self?.messagesCollectionView.scrollToLastItem()
             }
         }
     }
     
-    // Delegate
+    func bindForReloadAndKeepOffset() {
+        viewModel.onReload2 = { [weak self] in
+//            DispatchQueue.main.async {
+                self?.messagesCollectionView.reloadDataAndKeepOffset()
+//            }
+        }
+    }
     
+    // Delegate
     func setupMessageDelegate() {
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
+//        messagesCollectionView.messageCellDelegate = self
+        
+        scrollsToLastItemOnKeyboardBeginsEditing = true
+        maintainPositionOnKeyboardFrameChanged = true
+        
+        messagesCollectionView.refreshControl = refrechController
+        
         messageInputBar.delegate = self
+    }
+    
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if refrechController.isRefreshing {
+            viewModel.increaseLimit()
+            refrechController.endRefreshing()
+        }
     }
     
 }
@@ -66,10 +90,12 @@ extension ChatTableViewController: MessagesDataSource {
         return viewModel.numberOfSections()
     }
     
-    
 }
 //MARK: - MessagesLayoutDelegate
 extension ChatTableViewController: MessagesLayoutDelegate {
+    
+    
+
     
 }
 //MARK: - MessagesDisplayDelegate
@@ -78,20 +104,12 @@ extension ChatTableViewController: MessagesDisplayDelegate {
             avatarView.initials = "MN"
 //            avatarView.initials = viewModel.configureAvatarView(indexPath: indexPath)
         }
-    
 }
 
 extension ChatTableViewController: InputBarAccessoryViewDelegate {
-    
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         viewModel.didPressSendButton(with: text)
         //        text.removeAll()
         inputBar.inputTextView.text.removeAll()
-
-        
-        
     }
-    
-    
-    
 }

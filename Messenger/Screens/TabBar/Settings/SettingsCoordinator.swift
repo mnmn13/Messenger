@@ -9,11 +9,11 @@
 import UIKit
 
 protocol SettingsCoordinatorTransitions: AnyObject {
-    
+    func logOut()
 }
 
 protocol SettingsCoordinatorType {
-    
+    func logOut()
 }
 
 class SettingsCoordinator: SettingsCoordinatorType {
@@ -39,7 +39,10 @@ class SettingsCoordinator: SettingsCoordinatorType {
             controller.viewModel = viewModel
             navigationController?.setViewControllers([controller], animated: true)
         }
-        
+    }
+    
+    func logOut() {
+        transitions?.logOut()
     }
     
 }

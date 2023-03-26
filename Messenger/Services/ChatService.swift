@@ -8,9 +8,7 @@
 
 import Foundation
 
-protocol ChatServiceType: Service {
-    
-}
+protocol ChatServiceType: Service {}
 
 class ChatService: Service {
     
@@ -25,7 +23,8 @@ class ChatService: Service {
     ///Creates conversation by Conversation model with first message
     func createConversation(usersIsFetching: Bool, currentUser: User, companion: User, text: String, completion: @escaping SimpleClosure<String>) {
         
-        let message = Message(senderID: currentUser.userInfo.uid, text: text, time: Time.dateToString(date: Date()))
+//        let message = Message(senderID: currentUser.userInfo.uid, text: text, time: Time.dateToString(date: Date()))
+        let message = Message(senderID: currentUser.userInfo.uid, text: text, time: Date().timeIntervalSince1970)
         
         FirebaseRealtimeDatabaseManager.shared.createConversation(usersIsFetching: usersIsFetching, currentUser: currentUser, companion: companion, message: message) { conversationID in
             completion(conversationID)
@@ -51,9 +50,10 @@ class ChatService: Service {
         }
     }
     /// Sends message to firebase
-    func sendMessage(conversationID: String, text: String, sender: String, time: String, completion: @escaping EmptyClosure) {
+    func sendMessage(conversationID: String, text: String, sender: String, completion: @escaping EmptyClosure) {
         
-        let message = Message(senderID: sender, text: text, time: Time.dateToString(date: Date()))
+//        let message = Message(senderID: sender, text: text, time: Time.dateToString(date: Date()))
+        let message = Message(senderID: sender, text: text, time: Date().timeIntervalSince1970)
         
         FirebaseRealtimeDatabaseManager.shared.sendMessage(conversationID: conversationID, message: message) {
 //            completion()
@@ -101,6 +101,22 @@ class ChatService: Service {
         for message in messagesID {
             FirebaseRealtimeDatabaseManager.shared.readMessage(conversationID: conversationID, messageID: message)
         }
+    }
+    /// Fetching existing messages with limit
+    func fetchExistingMessages(conversationID: String, limit: UInt, completion: @escaping SimpleClosure<[Message]>) {
+        FirebaseRealtimeDatabaseManager.shared.fetchMessages(conversationID: conversationID, limit: limit) { messages in
+            completion(messages)
+        }
+    }
+    /// Fetching new messages with limit - 1
+    func startFetchingNewMessage(conversationID: String, completion: @escaping SimpleClosure<Set<Message>>) {
+        FirebaseRealtimeDatabaseManager.shared.startFetchingNewMessage(conversationID: conversationID) { message in
+            completion(message)
+        }
+    }
+    /// Stop fetching new messages with limit - 1
+    func stopFetchingNewMessageslimit(conversationID: String) {
+        FirebaseRealtimeDatabaseManager.shared.stopFetchingNewMessagesLimit(conversationID: conversationID)
     }
     
     

@@ -313,10 +313,7 @@
 				AD24646229B60C230077F66F /* SettingsCoordinator.swift */,
 				AD24646429B60C340077F66F /* SettingsViewModel.swift */,
 				AD24A10C297EDCB800E2455A /* SettingsViewController.swift */,
-				AD290FD6297B50E700A46182 /* PhotoViewController.swift */,
-				AD290FDA297B516900A46182 /* ProfileViewController.swift */,
-				AD24A10E297EE28A00E2455A /* TabbarController.swift */,
-				AD24645529B60B710077F66F /* UserSettings */,
+				ADBD37D029D0CD830075629E /* Deprecated */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -556,6 +553,17 @@
 				AD24A110297EE3B700E2455A /* TabbarController.storyboard */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		ADBD37D029D0CD830075629E /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				AD24645529B60B710077F66F /* UserSettings */,
+				AD290FD6297B50E700A46182 /* PhotoViewController.swift */,
+				AD290FDA297B516900A46182 /* ProfileViewController.swift */,
+				AD24A10E297EE28A00E2455A /* TabbarController.swift */,
+			);
+			path = Deprecated;
 			sourceTree = "<group>";
 		};
 		ADC56BEA29859EF30099C98B /* UIView */ = {

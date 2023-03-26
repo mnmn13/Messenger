@@ -51,7 +51,8 @@ struct ConversationCellViewModel {
     }
     
     var lastActionTime: String {
-        let date = Time.stringToDate(string: conversationModel.lastMessage.time)
+//        let date = Time.stringToDate(string: conversationModel.lastMessage.time)
+        let date = Time.timeIntervalToDate(time: conversationModel.lastMessage.time)
         let stringDate = Time.dateToStringLastActivity(date: date)
         return stringDate
     }

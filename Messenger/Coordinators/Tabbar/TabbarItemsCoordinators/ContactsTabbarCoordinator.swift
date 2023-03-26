@@ -23,7 +23,7 @@ protocol ContactsTabbarCoordinatorType {
 class ContactsTabbarCoordinator: TabbarItemsCoordinatorType {
     
     let rootController = UINavigationController()
-    let tabBarItem = UITabBarItem(title: "Contacts", image: UIImage(systemName: "message.circle"), tag: 0)
+    let tabBarItem = UITabBarItem(title: "Contacts", image: UIImage(systemName: "person.circle"), tag: 0)
     private weak var transitions: ContactsTabbarCoordinatorTransitions?
 //    private weak var newCoordinator:
     private var serviceHodler: ServiceHolder

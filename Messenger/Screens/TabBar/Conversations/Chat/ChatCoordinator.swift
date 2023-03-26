@@ -35,7 +35,6 @@ class ChatCoordinator: ChatCoordinatorType {
     
     func start(with companion: User) {
         if let controller = controller {
-//            let viewModel = ChatViewModel(coordinator: self, serviceHolder: serviceHolder, companion: user)
             let viewModel = ChatViewModel(coordinator: self, serviceHolder: serviceHolder, companion: companion)
             controller.viewModel = viewModel
             navigationController?.pushViewController(controller, animated: true)
@@ -52,7 +51,12 @@ class ChatCoordinator: ChatCoordinatorType {
         }
     }
     
-    
-    
-    
+    func startWithConversationsPagination(with companion: User, withExistingConversationID: String) {
+        if let controller = controller {
+            let viewModel = ChatViewModel(coordinator: self, serviceHolder: serviceHolder, companion: companion)
+            viewModel.loadExistingConversation(conversationID: withExistingConversationID)
+            controller.viewModel = viewModel
+            navigationController?.pushViewController(controller, animated: true)
+        }
+    }
 }

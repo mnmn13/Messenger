@@ -90,10 +90,11 @@ class ContactsViewModel: ContactsViewModelType {
         if !chatService.didChatExists(currentUser: currentUser, companion: companion, completion: { [weak self] chat in
             guard let self = self else { return }
             // Request for chat
-            chatService.fetchChat(conversationID: chat) { conversation in
-                
-                self.coordinator.openChatWithConversations(with: companion, conversation: conversation)
-            }
+            self.coordinator.openChatWithConversationPagination(with: companion, conversationID: chat)
+//            chatService.fetchChat(conversationID: chat) { conversation in
+//
+//                self.coordinator.openChatWithConversations(with: companion, conversation: conversation)
+//            }
             print("Common chat id - \(chat)")
         }) { coordinator.openChat(with: users[indexPath.item]) }
     }

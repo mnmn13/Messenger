@@ -9,19 +9,18 @@
 import UIKit
 
 protocol SettingsTabbarCoordinatorTransitions: AnyObject {
-    
+    func logOut()
 }
 
 protocol SettingsTabbarCoordinatorType {
-    
+    func logOut()
 }
 
 class SettingsTabbarCoordinator: TabbarItemsCoordinatorType {
     
     let rootController = UINavigationController()
-    let tabBarItem = UITabBarItem(title: "Chats", image: UIImage(systemName: "message.circle"), tag: 0)
+    let tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gear.circle"), tag: 0)
     private weak var transitions: SettingsTabbarCoordinatorTransitions?
-//    private weak var newCoordinator:
     private var serviceHodler: ServiceHolder
     
     init(transitions: SettingsTabbarCoordinatorTransitions, serviceHodler: ServiceHolder) {
@@ -35,7 +34,6 @@ class SettingsTabbarCoordinator: TabbarItemsCoordinatorType {
     
     func start() {
         rootController.tabBarItem = tabBarItem
-        
         let coordinator = SettingsCoordinator(serviceHolder: serviceHodler, navigationController: rootController, transitions: self)
         coordinator.start()
     }
@@ -46,7 +44,9 @@ class SettingsTabbarCoordinator: TabbarItemsCoordinatorType {
 }
 
 extension SettingsTabbarCoordinator: SettingsCoordinatorTransitions {
-    
+    func logOut() {
+        transitions?.logOut()
+    }
 }
 
 

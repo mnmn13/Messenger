@@ -27,7 +27,6 @@ protocol ConversationsViewModelType {
 class ConversationsViewModel: ConversationsViewModelType {
     var onReload: EmptyClosure?
     
-    
     fileprivate let coordinator: ConversationsCoordinatorType
     private let userService: UserService
     private let chatService: ChatService
@@ -36,7 +35,9 @@ class ConversationsViewModel: ConversationsViewModelType {
     private var currentUser: UserInfo?
     
     init(coordinator: ConversationsCoordinatorType, serviceholder: ServiceHolder) {
-        
+        FirebaseRealtimeDatabaseManager.shared.fetchMessages(conversationID: "2B641AF2-A998-42BC-9B28-E0E460127E33", limit: 20) { messages in
+            
+        }
         self.coordinator = coordinator
         self.userService = serviceholder.get()
         self.chatService = serviceholder.get()
@@ -107,15 +108,15 @@ class ConversationsViewModel: ConversationsViewModelType {
     func cellForRowAt(with indexPath: IndexPath) -> (Conversation, User) {
         
         if conversations.isEmpty {
-             return (Conversation(lastActivity: "", lastMessage: Message(senderID: "", text: "", time: ""), messages: ["String" : Message(senderID: "", text: "", time: "")], participates: [Participates(email: "", name: "")]), User(conversations: nil, userInfo: UserInfo(email: "", firstName: "", lastName: "", uid: ""), isOnline: false))
+             return (Conversation(lastActivity: 1, lastMessage: Message(senderID: "", text: "", time: 1), messages: ["String" : Message(senderID: "", text: "", time: 1)], participates: [Participates(email: "", name: "")]), User(conversations: nil, userInfo: UserInfo(email: "", firstName: "", lastName: "", uid: ""), isOnline: false))
         } else {
             let companionFromConversation = conversations[indexPath.row].participates.filter { $0.email != UserDefaults.standard.getUserData().email }
             
-            guard let comp = companionFromConversation.first else { return (Conversation(lastActivity: "", lastMessage: Message(senderID: "", text: "", time: ""), messages: ["String" : Message(senderID: "", text: "", time: "")], participates: [Participates(email: "", name: "")]), User(conversations: nil, userInfo: UserInfo(email: "", firstName: "", lastName: "", uid: ""), isOnline: false))}
+            guard let comp = companionFromConversation.first else { return (Conversation(lastActivity: 1, lastMessage: Message(senderID: "", text: "", time: 1), messages: ["String" : Message(senderID: "", text: "", time: 1)], participates: [Participates(email: "", name: "")]), User(conversations: nil, userInfo: UserInfo(email: "", firstName: "", lastName: "", uid: ""), isOnline: false))}
             
             let companion = users.filter { $0.userInfo.email == comp.email }
             
-            guard let companion = companion.first else { return (Conversation(lastActivity: "", lastMessage: Message(senderID: "", text: "", time: ""), messages: ["String" : Message(senderID: "", text: "", time: "")], participates: [Participates(email: "", name: "")]), User(conversations: nil, userInfo: UserInfo(email: "", firstName: "", lastName: "", uid: ""), isOnline: false))}
+            guard let companion = companion.first else { return (Conversation(lastActivity: 1, lastMessage: Message(senderID: "", text: "", time: 1), messages: ["String" : Message(senderID: "", text: "", time: 1)], participates: [Participates(email: "", name: "")]), User(conversations: nil, userInfo: UserInfo(email: "", firstName: "", lastName: "", uid: ""), isOnline: false))}
             
             return (conversations[indexPath.row], companion)
         }
@@ -140,16 +141,6 @@ class ConversationsViewModel: ConversationsViewModelType {
         guard let companion = companion.first else { return }
         let comp = users.filter { $0.userInfo.email == companion.email }
         guard let comp = comp.first else { return }
-        
-        coordinator.openChatWithConversation(with: comp, conversation: conversations[indexPath.item])
-        
+        coordinator.openChatWithConversationIDPagination(with: comp, conversationID: conversations[indexPath.item].id)
     }
-    
-    
-    
-    
-    
-    
-    
-    
 }

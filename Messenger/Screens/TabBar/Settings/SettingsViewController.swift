@@ -13,10 +13,16 @@ class SettingsViewController: UIViewController {
     
     var viewModel: SettingsViewModelType!
     
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Settings"
-        setupNav()
+//        setupNav()
+        setupTV()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -25,7 +31,6 @@ class SettingsViewController: UIViewController {
     }
     
     private func setupNav() {
-//        navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editTapped))
     }
     
@@ -37,19 +42,39 @@ class SettingsViewController: UIViewController {
         present(navController, animated: true)
     }
     
+    private func setupTV() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        registerCell()
+    }
+    
+    private func registerCell() {
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+    }
     
     
     
+
+}
+
+extension SettingsViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.logOut()
+    }
+    
+}
+
+extension SettingsViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = "Log Out"
+        return cell
+    }
     
     
-    
-    
-    
-    
-    
-//    private func didAutorized() {
-//        if FirebaseAuth.Auth.auth().currentUser == nil {
-//            tabBarController?.selectedIndex = 0
-//        }
-//    }
 }

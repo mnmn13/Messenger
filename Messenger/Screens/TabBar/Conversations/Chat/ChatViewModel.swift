@@ -11,11 +11,14 @@ import MessageKit
 
 protocol ChatViewModelType {
     var onReload: EmptyClosure? { get set }
+    var onReload2: EmptyClosure? { get set }
     
     //CollectionView
     func currentSender() -> SenderType
     func messageForItem(indexPath: IndexPath) -> MessageType
     func numberOfSections() -> Int
+    
+    func increaseLimit()
     
     //InputBar
     func didPressSendButton(with text: String)
@@ -23,14 +26,11 @@ protocol ChatViewModelType {
     func getTitle() -> String
     
     func configureAvatarView(indexPath: IndexPath) -> String
-    
-    
-    
 }
 
 class ChatViewModel: ChatViewModelType {
     var onReload: EmptyClosure?
-    
+    var onReload2: EmptyClosure?
     
     fileprivate let coordinator: ChatCoordinatorType
     private var userService: UserService
@@ -40,8 +40,10 @@ class ChatViewModel: ChatViewModelType {
     private var readyToUseMessages: [MessageKitModel] = []
     private var conversation: Conversation?
     private var didChatExists: Bool = false
+    private var firstReload: Bool = true
     private var conversationID: String = ""
     private var messages: [Message] = []
+    private var messagesLimit: UInt = 20
     
     init(coordinator: ChatCoordinatorType, serviceHolder: ServiceHolder, companion: User) {
         
@@ -72,7 +74,7 @@ class ChatViewModel: ChatViewModelType {
         conversationID = conversation.id
         let rawMessages = conversation.messages.map { $0.value }
 
-        let ready = rawMessages.map { MessageKitModel(sender: SenderKitModel(senderId: $0.senderID, displayName: getSenderName(message: $0)), messageId: $0.messageID, sentDate: Time.stringToDate(string: $0.time), kind: .text($0.text)) }
+        let ready = rawMessages.map { MessageKitModel(sender: SenderKitModel(senderId: $0.senderID, displayName: getSenderName(message: $0)), messageId: $0.messageID, sentDate: Time.timeIntervalToDate(time: $0.time), kind: .text($0.text)) }
         let goMessage = ready.sorted(by: { $0.sentDate < $1.sentDate } )
         self.readyToUseMessages = goMessage
 
@@ -88,7 +90,6 @@ class ChatViewModel: ChatViewModelType {
         
     }
     
-    
     func validateNewMessage(){//rawMessage: Set<Message>) {
         chatService.startFetchingNewMessages(conversationID: conversationID) { [weak self] rawMessage in
             guard let self = self else { return }
@@ -97,13 +98,12 @@ class ChatViewModel: ChatViewModelType {
             let setNew = rawMessage
             let new = setNew.symmetricDifference(setOld)
             self.messages.append(contentsOf: new)
-            let ready = new.map { MessageKitModel(sender: SenderKitModel(senderId: $0.senderID, displayName: self.getSenderName(message: $0)), messageId: $0.messageID, sentDate: Time.stringToDate(string: $0.time), kind: .text($0.text)) }
+            let ready = new.map { MessageKitModel(sender: SenderKitModel(senderId: $0.senderID, displayName: self.getSenderName(message: $0)), messageId: $0.messageID, sentDate: Time.timeIntervalToDate(time: $0.time), kind: .text($0.text)) }
             guard let ready = ready.first else { return }
             self.readyToUseMessages.append(ready)
             self.onReload?()
         }
     }
-    
     
     func getSenderName(message: Message) -> String {
         guard let currentUser = currentUser else { return ""}
@@ -142,18 +142,12 @@ class ChatViewModel: ChatViewModelType {
         chatService.readMessages(conversationID: conversationID, messagesID: messagesToReadFinal)
     }
     
-
-    
-    
     func getSelfSender() -> SenderKitModel {
         
         guard let currentUser = currentUser else { return .init(senderId: "", displayName: "")}
         
         return .init(senderId: currentUser.userInfo.uid, displayName: "\(currentUser.userInfo.uid) \(currentUser.userInfo.uid)")
-        
-        
     }
-    
     
     //Message collectionView setup
     
@@ -181,14 +175,60 @@ class ChatViewModel: ChatViewModelType {
             chatService.createConversation(usersIsFetching: userIsFetching, currentUser: currentUser, companion: companion, text: text) { [weak self] conversationID in
                 self?.conversationID = conversationID
                 self?.userService.startFethingUsers()
-                self?.chatService.fetchChat(conversationID: conversationID, completion: { conversation in
-                    self?.validateMessagesages(conversation: conversation)
-                })
+                self?.startFetchingNewMessage()
+//                self?.chatService.fetchChat(conversationID: conversationID, completion: { conversation in
+//                    self?.validateMessagesages(conversation: conversation)
+//                })
             }
         } else {
-            guard let conversation = conversation else { return }
-            let time = Time.dateToString(date: Date())
-            chatService.sendMessage(conversationID: conversation.id, text: text, sender: currentUser.userInfo.uid, time: time) {}
+            chatService.sendMessage(conversationID: conversationID, text: text, sender: currentUser.userInfo.uid) {}
         }
+    }
+    
+    func startFetchingNewMessage() {
+        chatService.startFetchingNewMessage(conversationID: conversationID) { [weak self] message in
+            guard let self = self else { return }
+            let newSet = message
+            let oldSet = Set(self.messages)
+            let newMessage = oldSet.symmetricDifference(newSet)
+            guard let newMessage = newMessage.first else { return }
+            self.messages.append(newMessage)
+            self.onReload?()
+        }
+    }
+    
+    func loadExistingConversation(conversationID: String) {
+        let group = DispatchGroup()
+        self.conversationID = conversationID
+        loadMessages(conversationID: conversationID) { [weak self] in
+            self?.startFetchingNewMessage()
+        }
+        didChatExists = true
+    }
+    
+    func loadMessages(conversationID: String, completion: @escaping EmptyClosure) {
+        chatService.fetchExistingMessages(conversationID: conversationID, limit: messagesLimit) { [weak self] messages in
+            guard let self = self else { return }
+            let oldMessages = Set(self.messages)
+            let newMessages = Set(messages)
+            let new = oldMessages.symmetricDifference(newMessages)
+            self.messages.append(contentsOf: new)
+            let ready = new.map { MessageKitModel(sender: SenderKitModel(senderId: $0.senderID, displayName: self.getSenderName(message: $0)), messageId: $0.messageID, sentDate: Time.timeIntervalToDate(time: $0.time), kind: .text($0.text)) }
+            let readyReady = ready.sorted(by: { $0.sentDate < $1.sentDate })
+//            self.readyToUseMessages.append(contentsOf: readyReady)
+            self.readyToUseMessages.insert(contentsOf: readyReady, at: 0)
+            if self.firstReload {
+                self.onReload?()
+                self.firstReload = false
+            } else {
+                self.onReload2?()
+            }
+        }
+    }
+    /// Increase limit to +20 messages + load to chat
+    func increaseLimit() {
+//        guard let conversation = conversation else { return }
+        messagesLimit += 20
+        loadMessages(conversationID: conversationID) {}
     }
 }

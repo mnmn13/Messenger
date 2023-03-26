@@ -90,7 +90,7 @@ extension FirebaseRealtimeDatabaseManager {
         let conversationID = UUID().uuidString
         let messageID = message.messageID
         
-        let conversation = Conversation(id: conversationID, lastActivity: Time.dateToString(date: Date()), lastMessage: message, messages: [messageID: message], participates: [Participates(email: currentUser.userInfo.email, name: "\(currentUser.userInfo.firstName) \(currentUser.userInfo.lastName)"), Participates(email: companion.userInfo.email, name: "\(companion.userInfo.firstName) \(companion.userInfo.lastName)")])
+        let conversation = Conversation(id: conversationID, /*lastActivity: Time.dateToString(date: Date()) */ lastMessage: message, messages: [messageID: message], participates: [Participates(email: currentUser.userInfo.email, name: "\(currentUser.userInfo.firstName) \(currentUser.userInfo.lastName)"), Participates(email: companion.userInfo.email, name: "\(companion.userInfo.firstName) \(companion.userInfo.lastName)")])
         
         let dict = conversation.dictionary
         let group = DispatchGroup()
@@ -191,13 +191,47 @@ extension FirebaseRealtimeDatabaseManager {
                 self?.database.child(Key.conversations).child(conversationID).child(Key.messages).observe(.value, with: { snapshot in
                     if let dict = snapshot.value as? [String: [String: Any]] {
                         let users = dict.map { try! Message(from: $0.value) }
-                        let set = Set(users.sorted(by: {Time.stringToDate(string: $0.time) < Time.stringToDate(string: $1.time)} ))
+//                        let set = Set(users.sorted(by: {Time.stringToDate(string: $0.time) < Time.stringToDate(string: $1.time)} ))
+                        let set = Set(users.sorted(by: {Time.timeIntervalToDate(time: $0.time) < Time.timeIntervalToDate(time: $1.time)} ))
                             completion(set)
                             print("Fetching new messanges")
                     }
                 })
             }
         }
+    /// Returns messages which are sorted and numerated
+    func fetchMessages(conversationID: String, limit: UInt, completion: @escaping SimpleClosure<[Message]>) {
+        
+        DispatchQueue.global().async { [weak self] in
+            
+            self?.database.child(Key.conversations).child(conversationID).child(Key.messages).queryOrdered(byChild: Key.time).queryLimited(toLast: limit).observeSingleEvent(of: .value, with: { snapshot in
+                if let dict = snapshot.value as? DictDataType {
+                    let messages = dict.map { try! Message(from: $0.value) }
+                    let sortedMessages = messages.sorted(by: { $0.time > $1.time })
+                    completion(sortedMessages)
+                }
+            })
+        }
+    }
+    /// Start fetching new messages with limit - 1
+    func startFetchingNewMessage(conversationID: String, completion: @escaping SimpleClosure<Set<Message>>) {
+        DispatchQueue.global().async { [weak self] in
+            
+            self?.database.child(Key.conversations).child(conversationID).child(Key.messages).queryOrdered(byChild: Key.time).queryLimited(toLast: 1).observe(.value, with: { snapshot in
+                if let dict = snapshot.value as? DictDataType {
+                    let message = dict.map { try! Message(from: $0.value) }
+//                    guard let message = message.first else { return }
+                    completion(Set(message))
+                }
+            })
+        }
+    }
+    /// Stop fetching new messages with limit - 1
+    func stopFetchingNewMessagesLimit(conversationID: String) {
+        DispatchQueue.global().async { [weak self] in
+            self?.database.child(conversationID).child(Key.messages).queryOrdered(byChild: Key.time).queryLimited(toLast: 1).removeAllObservers()
+        }
+    }
     
     
 //    func startFetchingNewMessages(conversationID: String, completion: @escaping SimpleClosure<[Message]>) {
@@ -228,7 +262,7 @@ extension FirebaseRealtimeDatabaseManager {
 //        }
 //    }
     ///Update conversation last action time with last message
-    func updateLastActionTime(conversationID: String, time: String, message: Message) {
+    func updateLastActionTime(conversationID: String, time: TimeInterval, message: Message) {
         let messageToSave = message.dictionary
         DispatchQueue.global().async { [weak self] in
             self?.database.child(Key.conversations).child(conversationID).child(Key.lastActivity).setValue(time)

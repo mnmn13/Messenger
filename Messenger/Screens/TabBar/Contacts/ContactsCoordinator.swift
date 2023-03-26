@@ -16,6 +16,7 @@ protocol ContactsCoordinatorType {
     
     func openChat(with user: User)
     func openChatWithConversations(with companion: User, conversation: Conversation)
+    func openChatWithConversationPagination(with companion: User, conversationID: String)
     
 }
 
@@ -52,9 +53,15 @@ class ContactsCoordinator: ContactsCoordinatorType {
 
 
     }
+    
     func openChatWithConversations(with companion: User, conversation: Conversation) {
         let coordinator = ChatCoordinator(serviceHolder: serviceHolder, navigationController: navigationController, transitions: self)
         coordinator.startWithConversation(with: companion, conversation: conversation)
+    }
+    
+    func openChatWithConversationPagination(with companion: User, conversationID: String) {
+        let coordinator = ChatCoordinator(serviceHolder: serviceHolder, navigationController: navigationController, transitions: self)
+        coordinator.startWithConversationsPagination(with: companion, withExistingConversationID: conversationID)
     }
     
     

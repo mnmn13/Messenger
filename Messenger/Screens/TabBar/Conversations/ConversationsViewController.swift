@@ -26,11 +26,11 @@ class ConversationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
-        guard let name = UserDefaults.standard.value(forKey: "firstName") as? String else { return }
-        title = name
+//        guard let name = UserDefaults.standard.value(forKey: "firstName") as? String else { return }
+        title = "Chats"
         bind()
 //        viewModel.loadInfo()
-        setupNavSearch()
+//        setupNavSearch()
         setupTV()
         setupNoChatsLabel()
         fetchChats()
