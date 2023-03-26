@@ -291,7 +291,6 @@
 				AD24644F29B60A970077F66F /* ConversationsCoordinator.swift */,
 				AD24645129B60A9F0077F66F /* ConversationsViewModel.swift */,
 				AD77EAE3294881E700C95E63 /* ConversationsViewController.swift */,
-				AD24645329B60ABF0077F66F /* NewChat */,
 				AD24645429B60AE80077F66F /* Chat */,
 			);
 			path = Conversations;
@@ -558,6 +557,7 @@
 		ADBD37D029D0CD830075629E /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
+				AD24645329B60ABF0077F66F /* NewChat */,
 				AD24645529B60B710077F66F /* UserSettings */,
 				AD290FD6297B50E700A46182 /* PhotoViewController.swift */,
 				AD290FDA297B516900A46182 /* ProfileViewController.swift */,

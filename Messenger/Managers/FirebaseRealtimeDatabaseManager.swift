@@ -229,7 +229,7 @@ extension FirebaseRealtimeDatabaseManager {
     /// Stop fetching new messages with limit - 1
     func stopFetchingNewMessagesLimit(conversationID: String) {
         DispatchQueue.global().async { [weak self] in
-            self?.database.child(conversationID).child(Key.messages).queryOrdered(byChild: Key.time).queryLimited(toLast: 1).removeAllObservers()
+            self?.database.child(Key.conversations).child(conversationID).child(Key.messages).queryOrdered(byChild: Key.time).queryLimited(toLast: 1).removeAllObservers()
         }
     }
     

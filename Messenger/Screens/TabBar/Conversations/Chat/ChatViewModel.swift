@@ -41,6 +41,7 @@ class ChatViewModel: ChatViewModelType {
     private var conversation: Conversation?
     private var didChatExists: Bool = false
     private var firstReload: Bool = true
+    private var firstReload2: Bool = true
     private var conversationID: String = ""
     private var messages: [Message] = []
     private var messagesLimit: UInt = 20
@@ -176,9 +177,6 @@ class ChatViewModel: ChatViewModelType {
                 self?.conversationID = conversationID
                 self?.userService.startFethingUsers()
                 self?.startFetchingNewMessage()
-//                self?.chatService.fetchChat(conversationID: conversationID, completion: { conversation in
-//                    self?.validateMessagesages(conversation: conversation)
-//                })
             }
         } else {
             chatService.sendMessage(conversationID: conversationID, text: text, sender: currentUser.userInfo.uid) {}
@@ -188,21 +186,32 @@ class ChatViewModel: ChatViewModelType {
     func startFetchingNewMessage() {
         chatService.startFetchingNewMessage(conversationID: conversationID) { [weak self] message in
             guard let self = self else { return }
-            let newSet = message
-            let oldSet = Set(self.messages)
-            let newMessage = oldSet.symmetricDifference(newSet)
-            guard let newMessage = newMessage.first else { return }
-            self.messages.append(newMessage)
-            self.onReload?()
+
+            if self.firstReload2 {
+                self.firstReload2 = false
+            } else {
+                //            let newSet = message
+                //            let oldSet = Set(self.messages)
+                //            let newMessage = oldSet.symmetricDifference(newSet)
+                //            guard let newMessage = newMessage.first else { return }
+                            guard let mes = message.first else { return }
+                            let messag = message.map { MessageKitModel(sender: SenderKitModel(senderId: $0.senderID, displayName: self.getSenderName(message: $0)), messageId: $0.messageID, sentDate: Time.timeIntervalToDate(time: $0.time), kind: .text($0.text)) }
+                            guard let message = messag.first else { return }
+                //            self.messages.append(mes)
+                            self.readyToUseMessages.append(message)
+                //            let ready = message.map { MessageKitModel(sender: SenderKitModel(senderId: $.sender, displayName: <#T##String#>), messageId: <#T##String#>, sentDate: <#T##Date#>, kind: <#T##MessageKind#>) }
+                            self.onReload2?()
+            }
+            
         }
     }
     
     func loadExistingConversation(conversationID: String) {
-        let group = DispatchGroup()
         self.conversationID = conversationID
-        loadMessages(conversationID: conversationID) { [weak self] in
-            self?.startFetchingNewMessage()
+        loadMessages(conversationID: conversationID) {
+            self.startFetchingNewMessage()
         }
+
         didChatExists = true
     }
     
@@ -215,11 +224,11 @@ class ChatViewModel: ChatViewModelType {
             self.messages.append(contentsOf: new)
             let ready = new.map { MessageKitModel(sender: SenderKitModel(senderId: $0.senderID, displayName: self.getSenderName(message: $0)), messageId: $0.messageID, sentDate: Time.timeIntervalToDate(time: $0.time), kind: .text($0.text)) }
             let readyReady = ready.sorted(by: { $0.sentDate < $1.sentDate })
-//            self.readyToUseMessages.append(contentsOf: readyReady)
             self.readyToUseMessages.insert(contentsOf: readyReady, at: 0)
             if self.firstReload {
                 self.onReload?()
                 self.firstReload = false
+                completion()
             } else {
                 self.onReload2?()
             }
@@ -227,7 +236,6 @@ class ChatViewModel: ChatViewModelType {
     }
     /// Increase limit to +20 messages + load to chat
     func increaseLimit() {
-//        guard let conversation = conversation else { return }
         messagesLimit += 20
         loadMessages(conversationID: conversationID) {}
     }
