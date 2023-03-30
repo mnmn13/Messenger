@@ -58,6 +58,7 @@ extension FirebaseRealtimeDatabaseManager {
                     guard let user = user.first else { return }
                     DispatchQueue.main.async {
                         completion(user)
+                        print("Current user data recieved")
                     }
                 }
             })
@@ -71,7 +72,7 @@ extension FirebaseRealtimeDatabaseManager {
                     let users = dict.map { try! User(from: $0.value) }
                     DispatchQueue.main.async {
                         completion(users)
-                        print("Fetching users started")
+                        print("Users data updated")
                     }
                 }
             })
@@ -81,7 +82,7 @@ extension FirebaseRealtimeDatabaseManager {
     func stopFetchingUsersFromDatabase() {
         DispatchQueue.global().async { [weak self] in
             self?.database.child(Key.users).removeAllObservers()
-            print("Fetching userd stopped")
+            print("Fetching users stopped")
         }
     }
     ///Creates conversation in database by Message model with first message
@@ -96,7 +97,7 @@ extension FirebaseRealtimeDatabaseManager {
         let group = DispatchGroup()
         
         if usersIsFetching {
-            stopFetchingUsersFromDatabase()
+//            stopFetchingUsersFromDatabase()
         }
         
         DispatchQueue.global().async { [weak self] in
@@ -277,7 +278,7 @@ extension FirebaseRealtimeDatabaseManager {
                 if let dict = snapshot.value as? DictDataType {
                     let conversations = dict.map { try! Conversation(from: $0.value) }
                      completion(conversations)
-                    print("Fetching all chats started")
+                    print("Conversations data updated")
                 }
             })
         }

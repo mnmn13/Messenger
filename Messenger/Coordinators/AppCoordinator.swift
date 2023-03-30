@@ -29,7 +29,6 @@ class AppCoordinator {
         } else {
             startAuthFlow()
         }
-    
     }
     
     private func startAuthFlow() {

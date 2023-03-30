@@ -10,6 +10,7 @@ import Foundation
 
 protocol SettingsViewModelType {
     func logOut()
+    func getUserName() -> String
 }
 
 class SettingsViewModel: SettingsViewModelType {
@@ -36,6 +37,12 @@ class SettingsViewModel: SettingsViewModelType {
                 coordinator.logOut()
             }
         }
+    }
+    
+    func getUserName() -> String {
+        let user = UserDefaults.standard.getUserData()
+        let name = "\(user.firstName) \(user.lastName)"
+        return name
     }
     
     

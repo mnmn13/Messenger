@@ -16,7 +16,12 @@ class UserService: Service {
 //    var allUsers: [User] = []
     var allUsers: [User] = []
     var filteredUsers: [User] = []
-    var currentUser: User?
+    var currentUser: User? {
+        didSet {
+            guard let currentUser = currentUser else { return }
+            UserDefaults.standard.saveUserData(user: currentUser)
+        }
+    }
     var filteredUsersCallback: SimpleClosure<[User]>?
     
     var usr: UsersModel?
@@ -51,6 +56,7 @@ class UserService: Service {
     
     func startFethingUsers() {
         let curUser = UserDefaults.standard.getUserData()
+        print("Fetching users data started")
         FirebaseRealtimeDatabaseManager.shared.startFetchUsersFromDatabase { [weak self] users in
             guard let self = self else { return }
             self.allUsers = users

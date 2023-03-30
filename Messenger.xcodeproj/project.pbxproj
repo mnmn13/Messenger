@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD11CB5C29D59CD1003AA9A3 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11CB5B29D59CD1003AA9A3 /* NetworkHelper.swift */; };
 		AD24642D29B4F8E90077F66F /* UserDefaultsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD24642C29B4F8E90077F66F /* UserDefaultsExtensions.swift */; };
 		AD24642F29B4F9190077F66F /* UIStoryboardExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD24642E29B4F9190077F66F /* UIStoryboardExtensions.swift */; };
 		AD24643129B4F9340077F66F /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD24643029B4F9340077F66F /* UIViewController.swift */; };
@@ -103,6 +104,7 @@
 /* Begin PBXFileReference section */
 		00EBA753CCE00C279902EC94 /* Pods_Messenger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Messenger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1616A8FD9A1C5ADEBCA48782 /* Pods-Messenger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.debug.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.debug.xcconfig"; sourceTree = "<group>"; };
+		AD11CB5B29D59CD1003AA9A3 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
 		AD24642C29B4F8E90077F66F /* UserDefaultsExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtensions.swift; sourceTree = "<group>"; };
 		AD24642E29B4F9190077F66F /* UIStoryboardExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtensions.swift; sourceTree = "<group>"; };
 		AD24643029B4F9340077F66F /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
@@ -438,6 +440,7 @@
 				AD50BEF129806BE800BDA7AD /* Typealias.swift */,
 				AD50BEF329806C7C00BDA7AD /* Enums.swift */,
 				AD4051CB29C0DC3F00008406 /* Time.swift */,
+				AD11CB5B29D59CD1003AA9A3 /* NetworkHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -807,6 +810,7 @@
 				AD9B3A0429C855BF006508E1 /* Array.swift in Sources */,
 				AD81CACD29C94F8200002F37 /* ConversationCellViewModel.swift in Sources */,
 				AD24643F29B5003C0077F66F /* TabBarCoordinator.swift in Sources */,
+				AD11CB5C29D59CD1003AA9A3 /* NetworkHelper.swift in Sources */,
 				AD4051D329C4BA9100008406 /* MessageType.swift in Sources */,
 				AD86072F293DAF5D00202EA4 /* ChatTableViewController.swift in Sources */,
 				AD4051CC29C0DC3F00008406 /* Time.swift in Sources */,
@@ -971,6 +975,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3H8Z3J9U5A;
@@ -984,7 +989,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1004,6 +1009,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3H8Z3J9U5A;
@@ -1017,7 +1023,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

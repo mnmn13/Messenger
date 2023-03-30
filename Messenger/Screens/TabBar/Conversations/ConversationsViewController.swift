@@ -9,36 +9,30 @@
 //
 
 import UIKit
-import FirebaseAuth
-import JGProgressHUD
 
 class ConversationsViewController: UIViewController {
     
     var viewModel: ConversationsViewModelType!
     
-    let searchController = UISearchController()
-    private var searchBar: UISearchBar!
-    private var tableView = UITableView()
+    @IBOutlet weak var tableView: UITableView!
+    
     private let noChatsLabel = UILabel()
-    private let loading = JGProgressHUD(style: .dark) // Loading circle
     let refrechControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
-//        guard let name = UserDefaults.standard.value(forKey: "firstName") as? String else { return }
         title = "Chats"
-        bind()
-//        viewModel.loadInfo()
-//        setupNavSearch()
         setupTV()
-        setupNoChatsLabel()
-        fetchChats()
+        bind()
+        setupRefreshControl()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -48,7 +42,6 @@ class ConversationsViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationItem.hidesBackButton = false
-//        navigationController?.navigationBar.prefersLargeTitles = false
     }
     // ????????
     override func viewDidLayoutSubviews() {
@@ -59,80 +52,32 @@ class ConversationsViewController: UIViewController {
         viewModel.onReload = { [weak self] in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
+                print("RELOADED")
             }
         }
     }
     
     private func setupRefreshControl() {
-        refrechControl.attributedTitle = NSAttributedString(string: "Loading")
+//        refrechControl.attributedTitle = NSAttributedString(string: "Loading")
         refrechControl.addTarget(self, action: #selector(refresh), for: .allEvents)
         tableView.addSubview(refrechControl)
     }
     
     @objc private func refresh() {
-        viewModel.refreshData()
-    }
-    
-    private func setupNavSearch() {
         
-        let editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(logOut))
-        let newChatButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(newChat))
-        self.navigationItem.rightBarButtonItems = [newChatButton, editButton]
-        
-//        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: nil)
-        
-//        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(newChat))
-//        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.searchController = searchController
-        searchController.searchBar.delegate = self
-        searchController.searchBar.searchTextField.defaultTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString.init(string: "Search", attributes: [NSAttributedString.Key.foregroundColor:UIColor.white])
-        searchController.searchBar.searchTextField.leftView?.tintColor = .systemGray
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
-        navBarAppearance.backgroundColor = .clear
-        navigationController?.navigationBar.standardAppearance = navBarAppearance
-        navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-//        navigationController?.navigationBar.prefersLargeTitles = true
-    }
-    
-    @objc private func logOut() {
-        viewModel.logOut()
-    }
-    
-    @objc private func newChat() {
-//        let storyboard = UIStoryboard(name: "NewChat", bundle: .main)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "newChat")
-//        let navController = UINavigationController(rootViewController: vc)
-//        present(navController, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+            self?.refrechControl.endRefreshing()
+        }
     }
     
     private func setupTV() {
-        view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.isHidden = true
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.isHidden = false
         tableView.register(UINib(nibName: ConversationCell.identifier, bundle: .main), forCellReuseIdentifier: ConversationCell.identifier)
     }
-    // If the user does not have any active chat
-    private func setupNoChatsLabel() {
-        view.addSubview(noChatsLabel)
-        noChatsLabel.isHidden = true
-        noChatsLabel.text = "You haven't started any chat yet!"
-        noChatsLabel.textAlignment = .center
-        noChatsLabel.textColor = .systemGray
-        noChatsLabel.font = .systemFont(ofSize: 21, weight: .medium)
-    }
-    
-    private func fetchChats() {
-        tableView.isHidden = false
-    }
 
-    
-    
 }
 //MARK: - UISearchBarDelegate
 extension ConversationsViewController: UISearchBarDelegate {
@@ -154,23 +99,15 @@ extension ConversationsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
         let model = viewModel.cellForRowAt(with: indexPath)
         let conversationModel = model.0
         let userModel = model.1
         
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.identifier, for: indexPath) as? ConversationCell else { return .init()}
         let viewModel = ConversationCellViewModel(conversationModel: conversationModel, companion: userModel)
         cell.viewModel = viewModel
         cell.configure(with: viewModel)
         
-//        cell.textLabel?.text = viewModel.verifyData(chat: model)
-//        cell.accessoryType = .disclosureIndicator
-        
         return cell
     }
-    
-    
 }

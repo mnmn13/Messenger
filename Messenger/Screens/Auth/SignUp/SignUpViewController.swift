@@ -17,11 +17,16 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var password2TF: UITextField!
     @IBOutlet weak var alertLabel: UILabel!
     
+    @IBOutlet weak var registerButton: UIButton!
     var viewModel: SignUpViewModelType!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFields()
+        registerKeyboardNotification()
+    }
+    deinit {
+        removeKeyboardNotification()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -65,6 +70,29 @@ class SignUpViewController: UIViewController {
         password2TF.returnKeyType = .send
         password2TF.layer.cornerRadius = 15
         password2TF.isSecureTextEntry = true
+    }
+    
+    
+    func registerKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    func removeKeyboardNotification() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardShow(notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardHeight = keyboardFrame.cgRectValue.height
+            let bottomSpace = self.view.frame.height - (registerButton.frame.origin.y + registerButton.frame.height)
+            self.view.frame.origin.y -= keyboardHeight - bottomSpace + 10
+        }
+    }
+    
+    @objc private func keyboardHide() {
+        self.view.frame.origin.y = 0
     }
     
     @IBAction func registerTapped(_ sender: UIButton) {

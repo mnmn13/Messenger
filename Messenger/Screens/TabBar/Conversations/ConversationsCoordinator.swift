@@ -18,7 +18,6 @@ protocol ConversationsCoordinatorType {
     
     func logOut()
     func openChat(with companion: User, messages: [Message])
-    func openChatWithConversation(with companion: User, conversation: Conversation)
     func openChatWithConversationIDPagination(with companion: User, conversationID: String)
 }
 
@@ -56,11 +55,6 @@ class ConversationsCoordinator: ConversationsCoordinatorType {
             coordinator.start(with: companion)
             
         
-    }
-    
-    func openChatWithConversation(with companion: User, conversation: Conversation) {
-        let coordinator = ChatCoordinator(serviceHolder: serviceHolder, navigationController: navigationController, transitions: self)
-        coordinator.startWithConversation(with: companion, conversation: conversation)
     }
     
     func openChatWithConversationIDPagination(with companion: User, conversationID: String) {

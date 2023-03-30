@@ -24,8 +24,9 @@ class ChatTableViewController: MessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindForReload()
+        bindForReloadAndScroll()
         bindForReloadAndKeepOffset()
+        bindForReload()
         setupMessageDelegate()
         view.backgroundColor = .white
         title = viewModel.getTitle()
@@ -35,12 +36,12 @@ class ChatTableViewController: MessagesViewController {
         navigationItem.largeTitleDisplayMode = .never
     }
     
-    func bindForReload() {
+    func bindForReloadAndScroll() {
         viewModel.onReload = { [weak self] in
             DispatchQueue.main.async {
 //                self?.messagesCollectionView.reloadDataAndKeepOffset()
                 self?.messagesCollectionView.reloadData()
-                self?.messagesCollectionView.scrollToLastItem()
+                self?.messagesCollectionView.scrollToLastItem(animated: true)
             }
         }
     }
@@ -50,6 +51,14 @@ class ChatTableViewController: MessagesViewController {
 //            DispatchQueue.main.async {
                 self?.messagesCollectionView.reloadDataAndKeepOffset()
 //            }
+        }
+    }
+    
+    func bindForReload() {
+        viewModel.onReload3 = { [weak self] in
+            DispatchQueue.main.async {
+                self?.messagesCollectionView.reloadData()
+            }
         }
     }
     
@@ -101,7 +110,8 @@ extension ChatTableViewController: MessagesLayoutDelegate {
 //MARK: - MessagesDisplayDelegate
 extension ChatTableViewController: MessagesDisplayDelegate {
         func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-            avatarView.initials = "MN"
+            avatarView.initials = viewModel.configureAvatarView(indexPath: indexPath)
+//            avatarView.initials = "MN"
 //            avatarView.initials = viewModel.configureAvatarView(indexPath: indexPath)
         }
 }

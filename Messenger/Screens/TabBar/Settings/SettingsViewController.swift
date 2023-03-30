@@ -20,7 +20,7 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Settings"
+        title = viewModel.getUserName()
 //        setupNav()
         setupTV()
     }

@@ -58,14 +58,14 @@ class ChatService: Service {
         FirebaseRealtimeDatabaseManager.shared.sendMessage(conversationID: conversationID, message: message) {
 //            completion()
         }
-        
     }
     /// Start fetching new messages
+    @available(*, deprecated, message: "No More Available")
     func startFetchingNewMessages(conversationID: String, completion: @escaping SimpleClosure<Set<Message>>) {
-        FirebaseRealtimeDatabaseManager.shared.startFetchingNewMessages(conversationID: conversationID) { messages in
-//            self?.callBackNewMessage?(messages)
-            completion(messages)
-        }
+//        FirebaseRealtimeDatabaseManager.shared.startFetchingNewMessages(conversationID: conversationID) { messages in
+////            self?.callBackNewMessage?(messages)
+//            completion(messages)
+//        }
     }
     ///  Stop fetching new messages
     func stopFetchingNewMessages(conversationID: String) {
@@ -89,7 +89,7 @@ class ChatService: Service {
     }
     /// Starts fetching conversations and users in database
     func startFetchingAllDatabase() {
-        
+        print("Fetching All database started")
         FirebaseRealtimeDatabaseManager.shared.startFetchingAllChats { [weak self] conversations in
             FirebaseRealtimeDatabaseManager.shared.startFetchUsersFromDatabase { users in
                 self?.callBackDatabase?(conversations, users)

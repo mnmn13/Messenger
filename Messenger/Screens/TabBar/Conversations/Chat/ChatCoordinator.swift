@@ -41,16 +41,6 @@ class ChatCoordinator: ChatCoordinatorType {
         }
     }
     
-    func startWithConversation(with companion: User, conversation: Conversation) {
-        if let controller = controller {
-            let viewModel = ChatViewModel(coordinator: self, serviceHolder: serviceHolder, companion: companion)
-            viewModel.validateMessagesages(conversation: conversation)
-            controller.viewModel = viewModel
-            navigationController?.pushViewController(controller, animated: true)
-            
-        }
-    }
-    
     func startWithConversationsPagination(with companion: User, withExistingConversationID: String) {
         if let controller = controller {
             let viewModel = ChatViewModel(coordinator: self, serviceHolder: serviceHolder, companion: companion)

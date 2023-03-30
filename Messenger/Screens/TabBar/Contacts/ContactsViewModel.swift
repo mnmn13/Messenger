@@ -41,6 +41,7 @@ class ContactsViewModel: ContactsViewModelType {
         self.chatService = serviceHolder.get()
         self.progressHudService = serviceHolder.get()
         callbackUsers()
+        userService.startFethingUsers()
     }
     
     func loadInfo() {
@@ -51,7 +52,7 @@ class ContactsViewModel: ContactsViewModelType {
     func callbackUsers() {
         userService.filteredUsersCallback = { [weak self] users in
             guard let self = self else { return }
-            self.users = users
+            self.users = users.sorted(by: { $0.userInfo.firstName < $1.userInfo.firstName } )
             self.onReload?()
         }
     }
