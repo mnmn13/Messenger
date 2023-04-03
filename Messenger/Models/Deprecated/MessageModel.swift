@@ -10,11 +10,9 @@ import Foundation
 import MessageKit
 
 struct MessageKitModel: MessageType {
-
-    
     var sender: SenderType
-    var messageId: String
-    var sentDate: Date
+    var messageId: String = UUID().uuidString
+    var sentDate: Date = Date()
     var kind: MessageKind
     
 }

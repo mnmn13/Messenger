@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            appCoordinator = AppCoordinator(window: window)
         
         FirebaseRealtimeDatabaseManager.shared.goOnline()
- 
+        OpenAIManager.shared.openAIInit()
         return true
     }
     

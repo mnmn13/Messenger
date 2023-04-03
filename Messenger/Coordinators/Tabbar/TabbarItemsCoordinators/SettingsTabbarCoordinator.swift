@@ -37,10 +37,6 @@ class SettingsTabbarCoordinator: TabbarItemsCoordinatorType {
         let coordinator = SettingsCoordinator(serviceHolder: serviceHodler, navigationController: rootController, transitions: self)
         coordinator.start()
     }
-    
-    
-    
-    
 }
 
 extension SettingsTabbarCoordinator: SettingsCoordinatorTransitions {

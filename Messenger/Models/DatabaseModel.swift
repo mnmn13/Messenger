@@ -9,8 +9,6 @@
 import Foundation
 
 struct Database: HashCoded {
-    
     var conversations: [String: Conversation]
     var users: [String: User]
-    
 }

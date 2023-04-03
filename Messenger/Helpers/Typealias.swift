@@ -10,7 +10,7 @@ import Foundation
 import Firebase
 
 
-public typealias UploadPictureCompletion = (Result<String, Error>) -> Void
+typealias UploadPictureCompletion = (Result<String, Error>) -> Void
 
 typealias EmptyClosure = () -> ()
 typealias SimpleClosure<T> = (T) -> ()
@@ -19,6 +19,7 @@ typealias FirebaseRequestUserClosure<U: FirebaseAuth.User> = (U) -> ()
 typealias DoubleSimpleClosure<T, A> = (T, A) -> ()
 typealias TrippleSimpleClosure<A, B, C> = (A, B, C) -> ()
 typealias DefaultClosure<T, A> = (T) -> (A)
+typealias ResultClosure<R, E: Error> = (Result<R, E>) -> ()
 
 typealias UserDataType = [[String: [Double]]]
 

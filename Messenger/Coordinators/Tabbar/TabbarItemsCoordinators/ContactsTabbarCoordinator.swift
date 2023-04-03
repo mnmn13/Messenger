@@ -9,15 +9,11 @@
 import UIKit
 
 protocol ContactsTabbarCoordinatorTransitions: AnyObject {
-    
     func logOut()
-    
 }
 
 protocol ContactsTabbarCoordinatorType {
-    
     func logOut()
-    
 }
 
 class ContactsTabbarCoordinator: TabbarItemsCoordinatorType {
@@ -25,7 +21,6 @@ class ContactsTabbarCoordinator: TabbarItemsCoordinatorType {
     let rootController = UINavigationController()
     let tabBarItem = UITabBarItem(title: "Contacts", image: UIImage(systemName: "person.circle"), tag: 0)
     private weak var transitions: ContactsTabbarCoordinatorTransitions?
-//    private weak var newCoordinator:
     private var serviceHodler: ServiceHolder
     
     init(transitions: ContactsTabbarCoordinatorTransitions, serviceHodler: ServiceHolder) {
@@ -43,18 +38,12 @@ class ContactsTabbarCoordinator: TabbarItemsCoordinatorType {
         let coordinator = ContactsCoordinator(serviceHolder: serviceHodler, navigationController: rootController, transitions: self)
         coordinator.start()
     }
-    
-    
-    
 }
 
 extension ContactsTabbarCoordinator: ContactsCoordinatorTransitions {
-    
     func logOut() {
         transitions?.logOut()
     }
-    
-    
 }
 
 

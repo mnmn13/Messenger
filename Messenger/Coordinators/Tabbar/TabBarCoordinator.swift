@@ -15,26 +15,21 @@ enum TabBarItems: Int {
 }
 
 protocol TabbarCoordinatorTransitions: AnyObject {
-    
     func logout()
-    
 }
 
 protocol TabbarItemsCoordinatorType: AnyObject {
     var rootController: UINavigationController { get }
     var tabBarItem: UITabBarItem { get }
-    
 }
 
 class TabBarCoordinator {
-    
     
     private weak var window: UIWindow?
     private weak var transitions: TabbarCoordinatorTransitions?
     private let serviceHolder: ServiceHolder
     
     private let tabBarController = UITabBarController()
-//    private var tabCoordinators: [TabbarItemsCoordinatorType] = []
     private var tabCoordinators: [TabbarItemsCoordinatorType] = []
     
     init(window: UIWindow, transitions: TabbarCoordinatorTransitions, serviceHolder: ServiceHolder) {
@@ -46,15 +41,6 @@ class TabBarCoordinator {
         tabBarController.tabBar.tintColor = RGBColor(20, 20, 20)
         
         //tab bar items coordinator init
-//        let firstTabCoord = NewsTabCoordinator(serviceHolder: serviceHolder, transitions: self)
-//        firstTabCoord.start()
-//
-//        let secondTabCoord = ReadingListTabCoordinator(serviceHolder: serviceHolder, transitions: self)
-//        secondTabCoord.start()
-//
-//        let thirdTabCoordinator = ProfileTabCoordinator(serviceHolder: serviceHolder, transitions: self)
-//        thirdTabCoordinator.start()
-        
         let firstTabCoordinator = ConversationsTabbarCoordinator(transitions: self, serviceHodler: serviceHolder)
         firstTabCoordinator.start()
         
@@ -64,16 +50,9 @@ class TabBarCoordinator {
         let thirdTabCoordinator = SettingsTabbarCoordinator(transitions: self, serviceHodler: serviceHolder)
         thirdTabCoordinator.start()
         
-        
-        
         tabCoordinators = [firstTabCoordinator, secondTabCoordinator, thirdTabCoordinator]
         tabBarController.viewControllers = [firstTabCoordinator.rootController, secondTabCoordinator.rootController, thirdTabCoordinator.rootController]
-        
-//        let firstTabBarCoordinator = ConversationsTabbarCoordinator
-        
     }
-    
-    
     
     func start(animated: Bool = false) {
         guard let window = window else { return }
@@ -87,7 +66,6 @@ class TabBarCoordinator {
             window.makeKeyAndVisible()
         }
     }
-    
 }
 
 //MARK: TabBarCoordinator {
@@ -117,18 +95,12 @@ extension TabBarCoordinator {
     }
 }
 
-extension TabBarCoordinator: ConversationsTabbarCoordinatorTransitions {
-    
-}
+extension TabBarCoordinator: ConversationsTabbarCoordinatorTransitions {}
 
 extension TabBarCoordinator: ContactsTabbarCoordinatorTransitions {
     func logOut() {
         transitions?.logout()
     }
-    
-    
 }
 
-extension TabBarCoordinator: SettingsTabbarCoordinatorTransitions {
-    
-}
+extension TabBarCoordinator: SettingsTabbarCoordinatorTransitions {}

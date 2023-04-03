@@ -13,7 +13,6 @@ protocol ChatViewModelType {
     var onReload: EmptyClosure? { get set }
     var onReload2: EmptyClosure? { get set }
     var onReload3: EmptyClosure? { get set }
-    
     //CollectionView
     func currentSender() -> SenderType
     func messageForItem(indexPath: IndexPath) -> MessageType
@@ -60,14 +59,12 @@ class ChatViewModel: ChatViewModelType {
     
     deinit {
         print("\(type(of: self)) \(#function)")
-
         chatService.stopFetchingNewMessages(conversationID: conversationID)
         chatService.stopFetchingNewMessageslimit(conversationID: conversationID)
     }
     
     func getSenderName(message: Message) -> String {
         guard let currentUser = currentUser else { return ""}
-        
         if message.senderID == currentUser.userInfo.uid {
             return "\(currentUser.userInfo.firstName) \(currentUser.userInfo.lastName)"
         } else {
@@ -98,7 +95,6 @@ class ChatViewModel: ChatViewModelType {
     
     func readMessages() {
         let messageToSave = messages
-//        let messageToSave = conversation.messages.map { $0.value }
         let messagesToRead = messageToSave.filter { $0.isRead != true }
         let filteredMessages = messagesToRead.filter { $0.senderID != UserDefaults.standard.getUserData().uid }
         let messagesToReadFinal = filteredMessages.map { $0.messageID }
@@ -106,14 +102,11 @@ class ChatViewModel: ChatViewModelType {
     }
     
     func getSelfSender() -> SenderKitModel {
-        
         guard let currentUser = currentUser else { return .init(senderId: "", displayName: "")}
-        
         return .init(senderId: currentUser.userInfo.uid, displayName: "\(currentUser.userInfo.uid) \(currentUser.userInfo.uid)")
     }
     
     //Message collectionView setup
-    
     func currentSender() -> SenderType {
         return getSelfSender()
     }
@@ -127,11 +120,8 @@ class ChatViewModel: ChatViewModelType {
     }
     
     //Input bar actions
-    
     func didPressSendButton(with text: String) {
-        
         guard let currentUser = currentUser else { return }
-        
         if !didChatExists {
             let userIsFetching = userService.userIsFetching
             chatService.createConversation(usersIsFetching: userIsFetching, currentUser: currentUser, companion: companion, text: text) { [weak self] conversationID in
@@ -152,9 +142,7 @@ class ChatViewModel: ChatViewModelType {
                 guard let message = message.first else { return }
                 self.lastMessage = [message]
             } else {
-                
                 guard let messageToCheck = message.first else { return }
-                
                 if self.lastMessage.first?.messageID == messageToCheck.messageID {
                     return
                 } else {
@@ -234,5 +222,4 @@ class ChatViewModel: ChatViewModelType {
             }
         }
     }
-    
 }

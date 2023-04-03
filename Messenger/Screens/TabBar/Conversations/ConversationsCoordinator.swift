@@ -9,16 +9,13 @@
 import UIKit
 
 protocol ConversationsCoordinatorTransitions: AnyObject {
-    
     func logOut()
-    
 }
 
 protocol ConversationsCoordinatorType {
-    
     func logOut()
-    func openChat(with companion: User, messages: [Message])
     func openChatWithConversationIDPagination(with companion: User, conversationID: String)
+    func openOpenAIChat()
 }
 
 class ConversationsCoordinator: ConversationsCoordinatorType {
@@ -50,17 +47,16 @@ class ConversationsCoordinator: ConversationsCoordinatorType {
         transitions?.logOut()
     }
     
-    func openChat(with companion: User, messages: [Message]) {
-        let coordinator = ChatCoordinator(serviceHolder: serviceHolder, navigationController: navigationController, transitions: self)
-            coordinator.start(with: companion)
-            
-        
-    }
-    
     func openChatWithConversationIDPagination(with companion: User, conversationID: String) {
         let coordinator = ChatCoordinator(serviceHolder: serviceHolder, navigationController: navigationController, transitions: self)
         coordinator.startWithConversationsPagination(with: companion, withExistingConversationID: conversationID)
     }
+    
+    func openOpenAIChat() {
+        let coordinator = OpenAIChatCoordinator(serviceHolder: serviceHolder, navigationController: navigationController, transitions: self)
+        coordinator.start()
+    }
 }
 
 extension ConversationsCoordinator: ChatCoordinatorTransitions {}
+extension ConversationsCoordinator: OpenAIChatCoordinatorTransitions {}

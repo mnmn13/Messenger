@@ -8,15 +8,11 @@
 
 import UIKit
 
-protocol ContactsCoordinatorTransitions: AnyObject {
-    
-}
+protocol ContactsCoordinatorTransitions: AnyObject {}
 
 protocol ContactsCoordinatorType {
-    
     func openChat(with user: User)
     func openChatWithConversationPagination(with companion: User, conversationID: String)
-    
 }
 
 class ContactsCoordinator: ContactsCoordinatorType {
@@ -39,29 +35,19 @@ class ContactsCoordinator: ContactsCoordinatorType {
     
     func start() {
         if let controller = controller {
-//            controller.viewModel = ContactsViewModel(coordinator: self, serviceHolder: serviceHolder)
             navigationController?.setViewControllers([controller], animated: true)
-            
         }
-        
     }
     
     func openChat(with user: User) {
         let coordinator = ChatCoordinator(serviceHolder: serviceHolder, navigationController: navigationController, transitions: self)
             coordinator.start(with: user)
-
-
     }
     
     func openChatWithConversationPagination(with companion: User, conversationID: String) {
         let coordinator = ChatCoordinator(serviceHolder: serviceHolder, navigationController: navigationController, transitions: self)
         coordinator.startWithConversationsPagination(with: companion, withExistingConversationID: conversationID)
     }
-    
-    
-    
 }
 
-extension ContactsCoordinator: ChatCoordinatorTransitions {
-    
-}
+extension ContactsCoordinator: ChatCoordinatorTransitions {}

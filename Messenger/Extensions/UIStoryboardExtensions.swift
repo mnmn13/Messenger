@@ -14,6 +14,8 @@ struct Storyboard {
     static let contacts = UIStoryboard(name: "Contacts", bundle: nil)
     static let settings = UIStoryboard(name: "Settings", bundle: nil)
     static let chat = UIStoryboard(name: "Chat", bundle: nil)
+    static let signUp = UIStoryboard(name: "SignUp", bundle: nil)
+    static let openAI = UIStoryboard(name: "OpenAIChat", bundle: nil)
 }
 
 protocol StoryboardIdentifiable {

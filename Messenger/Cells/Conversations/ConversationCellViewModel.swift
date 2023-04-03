@@ -42,20 +42,15 @@ struct ConversationCellViewModel {
     }
     
     var unreadedMessages: Int {
-        
         let conversationMessages = conversationModel.messages.map {$0.value}
         let messages = conversationMessages.filter { $0.senderID != UserDefaults.standard.getUserData().uid }
         let mes = messages.filter { $0.isRead == false }
-        
         return mes.count
     }
     
     var lastActionTime: String {
-//        let date = Time.stringToDate(string: conversationModel.lastMessage.time)
         let date = Time.timeIntervalToDate(time: conversationModel.lastMessage.time)
         let stringDate = Time.dateToStringLastActivity(date: date)
         return stringDate
     }
-    
-    
 }

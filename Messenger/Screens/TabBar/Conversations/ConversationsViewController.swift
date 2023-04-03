@@ -26,6 +26,7 @@ class ConversationsViewController: UIViewController {
         setupTV()
         bind()
         setupRefreshControl()
+        setupBarButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,11 +40,12 @@ class ConversationsViewController: UIViewController {
         super.viewDidAppear(animated)
         
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationItem.hidesBackButton = false
     }
-    // ????????
+    
     override func viewDidLayoutSubviews() {
         tableView.frame = view.bounds
     }
@@ -58,7 +60,6 @@ class ConversationsViewController: UIViewController {
     }
     
     private func setupRefreshControl() {
-//        refrechControl.attributedTitle = NSAttributedString(string: "Loading")
         refrechControl.addTarget(self, action: #selector(refresh), for: .allEvents)
         tableView.addSubview(refrechControl)
     }
@@ -71,21 +72,25 @@ class ConversationsViewController: UIViewController {
         }
     }
     
+    private func setupBarButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "network"), style: .plain, target: self, action: #selector(openAIButtonTapped))
+    }
+    
+    @objc private func openAIButtonTapped() {
+        viewModel.openAIChat()
+    }
+    
     private func setupTV() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isHidden = false
         tableView.register(UINib(nibName: ConversationCell.identifier, bundle: .main), forCellReuseIdentifier: ConversationCell.identifier)
     }
-
 }
 //MARK: - UISearchBarDelegate
-extension ConversationsViewController: UISearchBarDelegate {
-    
-}
+extension ConversationsViewController: UISearchBarDelegate {}
 //MARK: - UITableViewDelegate
 extension ConversationsViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         viewModel.didSelectRowAt(indexPath: indexPath)

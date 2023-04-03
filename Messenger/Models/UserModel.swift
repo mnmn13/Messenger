@@ -12,7 +12,6 @@ struct User: HashCoded {
     var conversations: [String]?
     var userInfo: UserInfo
     var isOnline: Bool
-//    var lastActionTime: String
 }
 
 struct UserInfo: HashCoded {

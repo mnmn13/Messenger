@@ -27,7 +27,6 @@ class AuthFlowCoordinator {
     }
     
     func start() {
-        
         let coordinator = SignInCoordinator(navigationController: rootNav, transitions: self, serviceHolder: serviceHolder)
         coordinator.start()
         
@@ -46,13 +45,9 @@ extension AuthFlowCoordinator: SignInCoordinatorTransitions {
     }
     
     func signUp() {
-        let coordinator = SignUpCoordinator(navigationController: rootNav, transitions: self, serviceHolder: serviceHolder)
+        let coordinator = SignUpFlowCoordinator(navigationController: rootNav, transitions: self, serviceHolder: serviceHolder)
         coordinator.start()
-        
-//        if let controller: SignUpViewController = Storyboard.auth.instantiateViewController() {
-//            rootNav.pushViewController(controller, animated: true)
-        }
-    
+    }
     
     func startWithoutLogin() {
         transitions?.startWithoutLogin()
@@ -63,8 +58,10 @@ extension AuthFlowCoordinator: SignUpCoordinatorTransitions {
     func userDidRegister() {
         transitions?.userDidLogin()
     }
-    
-    func signIn() {
-        
+}
+
+extension AuthFlowCoordinator: SignUpFlowCoordinatorTransitions {
+    func userDidSignUp() {
+        transitions?.userDidLogin()
     }
 }

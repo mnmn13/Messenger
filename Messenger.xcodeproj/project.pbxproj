@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		AD11CB5C29D59CD1003AA9A3 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11CB5B29D59CD1003AA9A3 /* NetworkHelper.swift */; };
+		AD11CB6129D5F0E8003AA9A3 /* SignUp1Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11CB6029D5F0E8003AA9A3 /* SignUp1Coordinator.swift */; };
+		AD11CB6329D5F0F4003AA9A3 /* SignUp1ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11CB6229D5F0F4003AA9A3 /* SignUp1ViewModel.swift */; };
+		AD11CB6529D5F106003AA9A3 /* SignUp1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11CB6429D5F106003AA9A3 /* SignUp1ViewController.swift */; };
+		AD11CB6729D5F113003AA9A3 /* SignUp2Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11CB6629D5F113003AA9A3 /* SignUp2Coordinator.swift */; };
+		AD11CB6929D5F125003AA9A3 /* SignUp2ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11CB6829D5F125003AA9A3 /* SignUp2ViewModel.swift */; };
+		AD11CB6B29D5F131003AA9A3 /* SignUp2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11CB6A29D5F131003AA9A3 /* SignUp2ViewController.swift */; };
+		AD11CB6D29D5F144003AA9A3 /* SignUp3Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11CB6C29D5F144003AA9A3 /* SignUp3Coordinator.swift */; };
+		AD11CB6F29D5F150003AA9A3 /* SignUp3ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11CB6E29D5F150003AA9A3 /* SignUp3ViewModel.swift */; };
+		AD11CB7129D5F15E003AA9A3 /* SignUp3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11CB7029D5F15E003AA9A3 /* SignUp3ViewController.swift */; };
+		AD11CB7329D5F175003AA9A3 /* SignUpFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD11CB7229D5F175003AA9A3 /* SignUpFlowCoordinator.swift */; };
+		AD11CB7529D5F5EB003AA9A3 /* SignUp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD11CB7429D5F5EB003AA9A3 /* SignUp.storyboard */; };
 		AD24642D29B4F8E90077F66F /* UserDefaultsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD24642C29B4F8E90077F66F /* UserDefaultsExtensions.swift */; };
 		AD24642F29B4F9190077F66F /* UIStoryboardExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD24642E29B4F9190077F66F /* UIStoryboardExtensions.swift */; };
 		AD24643129B4F9340077F66F /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD24643029B4F9340077F66F /* UIViewController.swift */; };
@@ -64,6 +75,14 @@
 		AD50BEF429806C7C00BDA7AD /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD50BEF329806C7C00BDA7AD /* Enums.swift */; };
 		AD50BEF629808DDD00BDA7AD /* SettingsUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD50BEF529808DDD00BDA7AD /* SettingsUserViewController.swift */; };
 		AD50BEF82980A4C700BDA7AD /* FirebaseAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD50BEF72980A4C700BDA7AD /* FirebaseAuthManager.swift */; };
+		AD5A68BA29D9F0A300DA9278 /* OpenAIChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5A68B929D9F0A300DA9278 /* OpenAIChatCoordinator.swift */; };
+		AD5A68BC29DA099500DA9278 /* OpenAIChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5A68BB29DA099500DA9278 /* OpenAIChatViewModel.swift */; };
+		AD5A68BE29DA099F00DA9278 /* OpenAIChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5A68BD29DA099F00DA9278 /* OpenAIChatViewController.swift */; };
+		AD5A68C029DA0C5200DA9278 /* OpenAIChat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD5A68BF29DA0C5200DA9278 /* OpenAIChat.storyboard */; };
+		AD5A68C329DA14B000DA9278 /* OpenAISwift in Frameworks */ = {isa = PBXBuildFile; productRef = AD5A68C229DA14B000DA9278 /* OpenAISwift */; };
+		AD5A68C529DA153E00DA9278 /* OpenAIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5A68C429DA153E00DA9278 /* OpenAIManager.swift */; };
+		AD5A68C729DA1AC000DA9278 /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5A68C629DA1AC000DA9278 /* OpenAIService.swift */; };
+		AD5A68C929DA346C00DA9278 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5A68C829DA346C00DA9278 /* AlertHelper.swift */; };
 		AD5EED7929B6838B00545A47 /* ProgressHudService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5EED7829B6838B00545A47 /* ProgressHudService.swift */; };
 		AD72A5972980B7C900529870 /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD72A5962980B7C900529870 /* Auth.storyboard */; };
 		AD77EAE4294881E700C95E63 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD77EAE3294881E700C95E63 /* ConversationsViewController.swift */; };
@@ -105,6 +124,17 @@
 		00EBA753CCE00C279902EC94 /* Pods_Messenger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Messenger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1616A8FD9A1C5ADEBCA48782 /* Pods-Messenger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.debug.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.debug.xcconfig"; sourceTree = "<group>"; };
 		AD11CB5B29D59CD1003AA9A3 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
+		AD11CB6029D5F0E8003AA9A3 /* SignUp1Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp1Coordinator.swift; sourceTree = "<group>"; };
+		AD11CB6229D5F0F4003AA9A3 /* SignUp1ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp1ViewModel.swift; sourceTree = "<group>"; };
+		AD11CB6429D5F106003AA9A3 /* SignUp1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp1ViewController.swift; sourceTree = "<group>"; };
+		AD11CB6629D5F113003AA9A3 /* SignUp2Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp2Coordinator.swift; sourceTree = "<group>"; };
+		AD11CB6829D5F125003AA9A3 /* SignUp2ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp2ViewModel.swift; sourceTree = "<group>"; };
+		AD11CB6A29D5F131003AA9A3 /* SignUp2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp2ViewController.swift; sourceTree = "<group>"; };
+		AD11CB6C29D5F144003AA9A3 /* SignUp3Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp3Coordinator.swift; sourceTree = "<group>"; };
+		AD11CB6E29D5F150003AA9A3 /* SignUp3ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp3ViewModel.swift; sourceTree = "<group>"; };
+		AD11CB7029D5F15E003AA9A3 /* SignUp3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp3ViewController.swift; sourceTree = "<group>"; };
+		AD11CB7229D5F175003AA9A3 /* SignUpFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpFlowCoordinator.swift; sourceTree = "<group>"; };
+		AD11CB7429D5F5EB003AA9A3 /* SignUp.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUp.storyboard; sourceTree = "<group>"; };
 		AD24642C29B4F8E90077F66F /* UserDefaultsExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtensions.swift; sourceTree = "<group>"; };
 		AD24642E29B4F9190077F66F /* UIStoryboardExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtensions.swift; sourceTree = "<group>"; };
 		AD24643029B4F9340077F66F /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
@@ -163,6 +193,13 @@
 		AD50BEF329806C7C00BDA7AD /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		AD50BEF529808DDD00BDA7AD /* SettingsUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserViewController.swift; sourceTree = "<group>"; };
 		AD50BEF72980A4C700BDA7AD /* FirebaseAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthManager.swift; sourceTree = "<group>"; };
+		AD5A68B929D9F0A300DA9278 /* OpenAIChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIChatCoordinator.swift; sourceTree = "<group>"; };
+		AD5A68BB29DA099500DA9278 /* OpenAIChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIChatViewModel.swift; sourceTree = "<group>"; };
+		AD5A68BD29DA099F00DA9278 /* OpenAIChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIChatViewController.swift; sourceTree = "<group>"; };
+		AD5A68BF29DA0C5200DA9278 /* OpenAIChat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = OpenAIChat.storyboard; sourceTree = "<group>"; };
+		AD5A68C429DA153E00DA9278 /* OpenAIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIManager.swift; sourceTree = "<group>"; };
+		AD5A68C629DA1AC000DA9278 /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
+		AD5A68C829DA346C00DA9278 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		AD5EED7829B6838B00545A47 /* ProgressHudService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHudService.swift; sourceTree = "<group>"; };
 		AD72A5962980B7C900529870 /* Auth.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
 		AD77EAE3294881E700C95E63 /* ConversationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsViewController.swift; sourceTree = "<group>"; };
@@ -205,6 +242,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD5A68C329DA14B000DA9278 /* OpenAISwift in Frameworks */,
 				CFA1A474C19D177278F3D4FE /* Pods_Messenger.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -229,6 +267,36 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		AD11CB5D29D5F072003AA9A3 /* SignUp1 */ = {
+			isa = PBXGroup;
+			children = (
+				AD11CB6029D5F0E8003AA9A3 /* SignUp1Coordinator.swift */,
+				AD11CB6229D5F0F4003AA9A3 /* SignUp1ViewModel.swift */,
+				AD11CB6429D5F106003AA9A3 /* SignUp1ViewController.swift */,
+			);
+			path = SignUp1;
+			sourceTree = "<group>";
+		};
+		AD11CB5E29D5F082003AA9A3 /* SignUp2 */ = {
+			isa = PBXGroup;
+			children = (
+				AD11CB6629D5F113003AA9A3 /* SignUp2Coordinator.swift */,
+				AD11CB6829D5F125003AA9A3 /* SignUp2ViewModel.swift */,
+				AD11CB6A29D5F131003AA9A3 /* SignUp2ViewController.swift */,
+			);
+			path = SignUp2;
+			sourceTree = "<group>";
+		};
+		AD11CB5F29D5F094003AA9A3 /* SignUp3 */ = {
+			isa = PBXGroup;
+			children = (
+				AD11CB6C29D5F144003AA9A3 /* SignUp3Coordinator.swift */,
+				AD11CB6E29D5F150003AA9A3 /* SignUp3ViewModel.swift */,
+				AD11CB7029D5F15E003AA9A3 /* SignUp3ViewController.swift */,
+			);
+			path = SignUp3;
+			sourceTree = "<group>";
+		};
 		AD24643629B4F9D50077F66F /* Auth */ = {
 			isa = PBXGroup;
 			children = (
@@ -251,9 +319,9 @@
 		AD24643829B4F9EB0077F66F /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
-				AD24645629B60BA10077F66F /* SignUpCoordinator.swift */,
-				AD24645829B60BAC0077F66F /* SignUpViewModel.swift */,
-				AD291002297B64FD00A46182 /* SignUpViewController.swift */,
+				AD11CB5D29D5F072003AA9A3 /* SignUp1 */,
+				AD11CB5E29D5F082003AA9A3 /* SignUp2 */,
+				AD5A68B729D9EFC600DA9278 /* Deprecated */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -282,6 +350,7 @@
 			children = (
 				AD24644C29B60A420077F66F /* Conversations */,
 				AD24644D29B60A570077F66F /* Contacts */,
+				AD5A68B829D9F02000DA9278 /* OpenAIChat */,
 				AD24644E29B60A630077F66F /* Settings */,
 			);
 			path = TabBar;
@@ -441,6 +510,7 @@
 				AD50BEF329806C7C00BDA7AD /* Enums.swift */,
 				AD4051CB29C0DC3F00008406 /* Time.swift */,
 				AD11CB5B29D59CD1003AA9A3 /* NetworkHelper.swift */,
+				AD5A68C829DA346C00DA9278 /* AlertHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -450,8 +520,30 @@
 			children = (
 				AD72A5962980B7C900529870 /* Auth.storyboard */,
 				AD860730293FC0EB00202EA4 /* Registration.storyboard */,
+				AD11CB7429D5F5EB003AA9A3 /* SignUp.storyboard */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		AD5A68B729D9EFC600DA9278 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				AD24645629B60BA10077F66F /* SignUpCoordinator.swift */,
+				AD24645829B60BAC0077F66F /* SignUpViewModel.swift */,
+				AD291002297B64FD00A46182 /* SignUpViewController.swift */,
+				AD11CB5F29D5F094003AA9A3 /* SignUp3 */,
+			);
+			path = Deprecated;
+			sourceTree = "<group>";
+		};
+		AD5A68B829D9F02000DA9278 /* OpenAIChat */ = {
+			isa = PBXGroup;
+			children = (
+				AD5A68B929D9F0A300DA9278 /* OpenAIChatCoordinator.swift */,
+				AD5A68BB29DA099500DA9278 /* OpenAIChatViewModel.swift */,
+				AD5A68BD29DA099F00DA9278 /* OpenAIChatViewController.swift */,
+			);
+			path = OpenAIChat;
 			sourceTree = "<group>";
 		};
 		AD72A5982980B8CC00529870 /* Chat */ = {
@@ -460,6 +552,7 @@
 				AD291000297B591400A46182 /* Conversations.storyboard */,
 				AD50BEEC297F898900BDA7AD /* NewChat.storyboard */,
 				AD86072A293DAEE500202EA4 /* Chat.storyboard */,
+				AD5A68BF29DA0C5200DA9278 /* OpenAIChat.storyboard */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -505,6 +598,7 @@
 				AD50BEF72980A4C700BDA7AD /* FirebaseAuthManager.swift */,
 				AD8480C9297DB2070073E345 /* FirebaseRealtimeDatabaseManager.swift */,
 				AD50BEEE298058D500BDA7AD /* FirebaseStorageManager.swift */,
+				AD5A68C429DA153E00DA9278 /* OpenAIManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -602,6 +696,7 @@
 			children = (
 				ADFEEA9F29B22AF3009E0064 /* AppCoordinator.swift */,
 				ADFEEAA129B22B04009E0064 /* AuthFlowCoordinator.swift */,
+				AD11CB7229D5F175003AA9A3 /* SignUpFlowCoordinator.swift */,
 				AD24643D29B5002B0077F66F /* Tabbar */,
 			);
 			path = Coordinators;
@@ -614,6 +709,7 @@
 				AD24643429B4F99B0077F66F /* UserService.swift */,
 				AD4051CD29C3B43300008406 /* ChatService.swift */,
 				AD5EED7829B6838B00545A47 /* ProgressHudService.swift */,
+				AD5A68C629DA1AC000DA9278 /* OpenAIService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -652,6 +748,9 @@
 			dependencies = (
 			);
 			name = Messenger;
+			packageProductDependencies = (
+				AD5A68C229DA14B000DA9278 /* OpenAISwift */,
+			);
 			productName = Messenger;
 			productReference = AD3F69682925B77900121C96 /* Messenger.app */;
 			productType = "com.apple.product-type.application";
@@ -681,6 +780,9 @@
 				Base,
 			);
 			mainGroup = AD3F695F2925B77800121C96;
+			packageReferences = (
+				AD5A68C129DA14AF00DA9278 /* XCRemoteSwiftPackageReference "OpenAISwift" */,
+			);
 			productRefGroup = AD3F69692925B77900121C96 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -708,7 +810,9 @@
 				AD3F69752925B77A00121C96 /* Assets.xcassets in Resources */,
 				AD24A10B297EDC5A00E2455A /* Settings.storyboard in Resources */,
 				ADC56BE7298583800099C98B /* SettingsUserView.xib in Resources */,
+				AD5A68C029DA0C5200DA9278 /* OpenAIChat.storyboard in Resources */,
 				AD24A111297EE3B700E2455A /* TabbarController.storyboard in Resources */,
+				AD11CB7529D5F5EB003AA9A3 /* SignUp.storyboard in Resources */,
 				AD8717A32988CBEC00A86D9C /* SettingsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -765,6 +869,8 @@
 				AD290FD9297B514500A46182 /* NewChatViewController.swift in Sources */,
 				AD860733293FD66000202EA4 /* Storyboard.swift in Sources */,
 				AD24642D29B4F8E90077F66F /* UserDefaultsExtensions.swift in Sources */,
+				AD11CB7129D5F15E003AA9A3 /* SignUp3ViewController.swift in Sources */,
+				AD5A68C929DA346C00DA9278 /* AlertHelper.swift in Sources */,
 				AD86074D293FF0FD00202EA4 /* DependenciesImplementation.swift in Sources */,
 				AD9B39F929C8052A006508E1 /* Key.swift in Sources */,
 				AD4051DC29C4D62000008406 /* RequestUserModel.swift in Sources */,
@@ -777,6 +883,7 @@
 				AD24644429B51E5E0077F66F /* ContactsTabbarCoordinator.swift in Sources */,
 				AD50BEE9297F830C00BDA7AD /* MessageModel.swift in Sources */,
 				AD24645D29B60BC70077F66F /* ChatViewModel.swift in Sources */,
+				AD11CB6729D5F113003AA9A3 /* SignUp2Coordinator.swift in Sources */,
 				ADFEEAA029B22AF3009E0064 /* AppCoordinator.swift in Sources */,
 				AD86072D293DAF5100202EA4 /* ContactsTableViewController.swift in Sources */,
 				AD24642F29B4F9190077F66F /* UIStoryboardExtensions.swift in Sources */,
@@ -784,26 +891,36 @@
 				ADA252B7293412A800AFAE3F /* SignInViewController.swift in Sources */,
 				AD8480CA297DB2070073E345 /* FirebaseRealtimeDatabaseManager.swift in Sources */,
 				AD9B3A0029C80AE3006508E1 /* ConversationModel.swift in Sources */,
+				AD11CB6329D5F0F4003AA9A3 /* SignUp1ViewModel.swift in Sources */,
 				AD24A10D297EDCB800E2455A /* SettingsViewController.swift in Sources */,
 				AD4051DA29C4D5BD00008406 /* RequestParticipateModel.swift in Sources */,
 				AD24643129B4F9340077F66F /* UIViewController.swift in Sources */,
+				AD5A68C729DA1AC000DA9278 /* OpenAIService.swift in Sources */,
 				AD24644A29B522820077F66F /* String.swift in Sources */,
 				AD50BEF429806C7C00BDA7AD /* Enums.swift in Sources */,
 				AD24644629B520670077F66F /* SettingsTabbarCoordinator.swift in Sources */,
 				AD290FDB297B516900A46182 /* ProfileViewController.swift in Sources */,
 				ADF8377929C5432700C2402E /* UserDatabaseModel.swift in Sources */,
 				AD4051C829C0D57D00008406 /* SearchResultModel.swift in Sources */,
+				AD5A68C529DA153E00DA9278 /* OpenAIManager.swift in Sources */,
 				ADFEEAA229B22B04009E0064 /* AuthFlowCoordinator.swift in Sources */,
 				ADF8377429C5136600C2402E /* Decodable.swift in Sources */,
 				AD24A109297E0A4D00E2455A /* User.swift in Sources */,
 				AD50BEEF298058D500BDA7AD /* FirebaseStorageManager.swift in Sources */,
+				AD11CB6529D5F106003AA9A3 /* SignUp1ViewController.swift in Sources */,
+				AD5A68BA29D9F0A300DA9278 /* OpenAIChatCoordinator.swift in Sources */,
+				AD11CB6F29D5F150003AA9A3 /* SignUp3ViewModel.swift in Sources */,
 				AD4051D829C4D49D00008406 /* RequestConversationModel.swift in Sources */,
 				AD50BEF229806BE800BDA7AD /* Typealias.swift in Sources */,
 				AD24645729B60BA10077F66F /* SignUpCoordinator.swift in Sources */,
+				AD5A68BC29DA099500DA9278 /* OpenAIChatViewModel.swift in Sources */,
 				AD3F696C2925B77900121C96 /* AppDelegate.swift in Sources */,
+				AD5A68BE29DA099F00DA9278 /* OpenAIChatViewController.swift in Sources */,
 				AD77EAE4294881E700C95E63 /* ConversationsViewController.swift in Sources */,
 				AD50BEF82980A4C700BDA7AD /* FirebaseAuthManager.swift in Sources */,
 				AD4051C629C0D51900008406 /* MediaModel.swift in Sources */,
+				AD11CB6929D5F125003AA9A3 /* SignUp2ViewModel.swift in Sources */,
+				AD11CB6129D5F0E8003AA9A3 /* SignUp1Coordinator.swift in Sources */,
 				AD24644829B5210B0077F66F /* UIColor.swift in Sources */,
 				AD291003297B64FD00A46182 /* SignUpViewController.swift in Sources */,
 				AD9B39F429C6C43E006508E1 /* UsersModel.swift in Sources */,
@@ -815,9 +932,11 @@
 				AD86072F293DAF5D00202EA4 /* ChatTableViewController.swift in Sources */,
 				AD4051CC29C0DC3F00008406 /* Time.swift in Sources */,
 				AD290FD7297B50E700A46182 /* PhotoViewController.swift in Sources */,
+				AD11CB6D29D5F144003AA9A3 /* SignUp3Coordinator.swift in Sources */,
 				AD4051CE29C3B43300008406 /* ChatService.swift in Sources */,
 				AD24645929B60BAC0077F66F /* SignUpViewModel.swift in Sources */,
 				AD24645F29B60C000077F66F /* ContactsCoordinator.swift in Sources */,
+				AD11CB6B29D5F131003AA9A3 /* SignUp2ViewController.swift in Sources */,
 				AD9B39F229C688D1006508E1 /* Chat.swift in Sources */,
 				AD9B3A0229C81153006508E1 /* Encodable.swift in Sources */,
 				AD24644229B51DE40077F66F /* ConversationsTabbarCoordinator.swift in Sources */,
@@ -825,6 +944,7 @@
 				AD4051C129C0D44200008406 /* MessageKindExtentons.swift in Sources */,
 				AD81CAD329CB92F500002F37 /* DatabaseModel.swift in Sources */,
 				AD24646129B60C0D0077F66F /* ContactsViewModel.swift in Sources */,
+				AD11CB7329D5F175003AA9A3 /* SignUpFlowCoordinator.swift in Sources */,
 				AD24645029B60A970077F66F /* ConversationsCoordinator.swift in Sources */,
 				ADC56BE9298583A10099C98B /* SettingsUserView.swift in Sources */,
 				AD4051D529C4D25700008406 /* RequestMessageModel.swift in Sources */,
@@ -1059,6 +1179,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AD5A68C129DA14AF00DA9278 /* XCRemoteSwiftPackageReference "OpenAISwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/adamrushy/OpenAISwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AD5A68C229DA14B000DA9278 /* OpenAISwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AD5A68C129DA14AF00DA9278 /* XCRemoteSwiftPackageReference "OpenAISwift" */;
+			productName = OpenAISwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AD3F69602925B77800121C96 /* Project object */;
 }

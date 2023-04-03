@@ -16,10 +16,4 @@ class NetworkHelper {
     private init() {}
     
     let monitor = NWPathMonitor()
-    
-    
-
-    
-    
-    
 }

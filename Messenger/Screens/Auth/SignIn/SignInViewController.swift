@@ -22,7 +22,6 @@ class SignInViewController: UIViewController  {
         view.backgroundColor = .cyan
         setupTextFields()
     }
-    	
   // UI
     private func setupTextFields() {
         userNameTextField.delegate = self
@@ -38,7 +37,6 @@ class SignInViewController: UIViewController  {
         passwordTextField.returnKeyType = .send
         passwordTextField.layer.cornerRadius = 15
         passwordTextField.isSecureTextEntry = true
-        
     }
     
 // MARK: - Login
@@ -58,17 +56,12 @@ class SignInViewController: UIViewController  {
 }
 
 extension SignInViewController: UITextFieldDelegate {
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
         if textField == userNameTextField {
             passwordTextField.becomeFirstResponder()
         } else if textField == passwordTextField {
             loginTappedExtension()
         }
-        
-        
         return true
     }
-    
 }

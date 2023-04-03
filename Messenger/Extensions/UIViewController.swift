@@ -19,7 +19,6 @@ extension UIViewController {
                 return name
             }
         }
-        
         return fullName
     }
 }

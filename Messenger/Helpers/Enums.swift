@@ -12,7 +12,6 @@ import Foundation
 public enum StorageError: Error {
     case failedToUpload
     case failedToDownloadUrl
-    
 }
 
 public enum DatabaseError: Error {

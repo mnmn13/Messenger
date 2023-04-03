@@ -7,13 +7,11 @@
 //
 
 import Foundation
-//import FirebaseAuth
 
 protocol UserServiceType: Service {}
 
 class UserService: Service {
     
-//    var allUsers: [User] = []
     var allUsers: [User] = []
     var filteredUsers: [User] = []
     var currentUser: User? {
@@ -40,12 +38,9 @@ class UserService: Service {
     }
     
     func signUp(email: String, password: String, firstName: String, lastName: String, completion: @escaping EmptyClosure) {
-        
-        FirebaseAuthManager.shared.signUp(email: email, password: password) { [weak self] user in
-//            guard let self = self else { return }
+        FirebaseAuthManager.shared.signUp(email: email, password: password) { user in
             let userInfo = UserInfo(email: email, firstName: firstName, lastName: lastName, uid: user.uid)
             let userToDatabase = User(conversations: nil, userInfo: userInfo, isOnline: true)
-//            let userToDatabase = User(conversations: nil, userInfo: userInfo, lastActionTime: Time.dateToString(date: Date()))
             FirebaseRealtimeDatabaseManager.shared.createUserInDatabase(user: userToDatabase) {
                 completion()
             }
@@ -75,7 +70,6 @@ class UserService: Service {
 
     ///Logout
     func logout(completion: SimpleClosure<Bool>) {
-        
         FirebaseAuthManager.shared.logout { bool in
             if bool {
                 UserDefaults.standard.isLoggedIn = false

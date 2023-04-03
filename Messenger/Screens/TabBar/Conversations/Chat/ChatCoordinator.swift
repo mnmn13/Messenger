@@ -8,13 +8,9 @@
 
 import UIKit
 
-protocol ChatCoordinatorTransitions: AnyObject {
-    
-}
+protocol ChatCoordinatorTransitions: AnyObject {}
 
-protocol ChatCoordinatorType {
-    
-}
+protocol ChatCoordinatorType {}
 
 class ChatCoordinator: ChatCoordinatorType {
     

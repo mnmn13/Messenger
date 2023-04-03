@@ -28,17 +28,11 @@ class SignInCoordinator: SignInCoordinatorType {
     private weak var controller = Storyboard.auth.controller(withClass: SignInViewController.self)
     private var serviceHolder: ServiceHolder
     
-    
-    
-//    private var serviceHolder: ServiceHolder
-    
     init(navigationController: UINavigationController?, transitions: SignInCoordinatorTransitions?, serviceHolder: ServiceHolder) {
         self.navigationController = navigationController
         self.transitions = transitions
         self.serviceHolder = serviceHolder
-
         controller?.viewModel = SignInViewModel(coordinator: self, serviceHolder: self.serviceHolder)
-        
     }
     
     deinit {

@@ -11,20 +11,15 @@ import UIKit
 protocol ContactsViewModelType {
     var onReload: EmptyClosure? { get set }
     var viewDidLoadCallback: EmptyClosure? { get set }
-    
-    func loadInfo()
-    
     //TableView
     func getNumberOfSections() -> Int
     func getNumberOfRowsInSection() -> Int
     func getCellForRowAt(indexPath: IndexPath) -> User
     
     func didSelectRowAt(indexPath: IndexPath)
-    
 }
 
 class ContactsViewModel: ContactsViewModelType {
-    
     
     var viewDidLoadCallback: EmptyClosure?
     var onReload: EmptyClosure?
@@ -44,11 +39,6 @@ class ContactsViewModel: ContactsViewModelType {
         userService.startFethingUsers()
     }
     
-    func loadInfo() {
-//        users = userService.filteredUsers
-//        onReload?()
-        
-    }
     func callbackUsers() {
         userService.filteredUsersCallback = { [weak self] users in
             guard let self = self else { return }
@@ -92,10 +82,6 @@ class ContactsViewModel: ContactsViewModelType {
             guard let self = self else { return }
             // Request for chat
             self.coordinator.openChatWithConversationPagination(with: companion, conversationID: chat)
-//            chatService.fetchChat(conversationID: chat) { conversation in
-//
-//                self.coordinator.openChatWithConversations(with: companion, conversation: conversation)
-//            }
             print("Common chat id - \(chat)")
         }) { coordinator.openChat(with: users[indexPath.item]) }
     }

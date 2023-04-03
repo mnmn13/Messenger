@@ -21,7 +21,6 @@ class ConversationCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-//        selectionStyle = .none
     }
     
     func configure(with viewModel: ConversationCellViewModel) {
@@ -54,6 +53,5 @@ class ConversationCell: UITableViewCell {
             notificationLabel.layer.cornerRadius = 10
         }
     }
-    
 }
 

@@ -21,15 +21,12 @@ final class FirebaseAuthManager {
     func signIn(email: String, password: String, completion: @escaping FirebaseRequestUserClosure<FirebaseAuth.User>) {
         
         auth.signIn(withEmail: email, password: password) { authResult, error in
-            
             if error != nil {
-//                print(error?.localizedDescription!)
+                print(error?.localizedDescription as Any)
                 return
             }
             guard let result = authResult else { return }
             completion(result.user)
-            
-            
         }
     }
     
@@ -38,10 +35,9 @@ final class FirebaseAuthManager {
         auth.createUser(withEmail: email, password: password) { authResult, error in
             
             if error != nil {
-//                print(error?.localizedDescription!)
+                print(error?.localizedDescription as Any)
                 return
             }
-            
             guard let result = authResult else { return }
             completion(result.user)
         }
@@ -56,5 +52,4 @@ final class FirebaseAuthManager {
             completion(false)
         }
     }
-    
 }

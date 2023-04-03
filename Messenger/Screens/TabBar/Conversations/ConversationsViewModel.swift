@@ -17,6 +17,8 @@ protocol ConversationsViewModelType {
     func verifyData(chat: Conversation) -> String
     //TableView delegate
     func didSelectRowAt(indexPath: IndexPath)
+    
+    func openAIChat()
 }
 
 class ConversationsViewModel: ConversationsViewModelType {
@@ -99,5 +101,9 @@ class ConversationsViewModel: ConversationsViewModelType {
         let comp = users.filter { $0.userInfo.email == companion.email }
         guard let comp = comp.first else { return }
         coordinator.openChatWithConversationIDPagination(with: comp, conversationID: conversations[indexPath.item].id)
+    }
+    
+    func openAIChat() {
+        coordinator.openOpenAIChat()
     }
 }

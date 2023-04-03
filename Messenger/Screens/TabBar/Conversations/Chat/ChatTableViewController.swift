@@ -12,7 +12,6 @@ import InputBarAccessoryView
 class ChatTableViewController: MessagesViewController {
     
     let refrechController = UIRefreshControl()
-    
     var viewModel: ChatViewModelType!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -30,16 +29,12 @@ class ChatTableViewController: MessagesViewController {
         setupMessageDelegate()
         view.backgroundColor = .white
         title = viewModel.getTitle()
-//        scrollsToLastItemOnKeyboardBeginsEditing = true
         showMessageTimestampOnSwipeLeft = true
-//        navigationController?.navigationBar.barTintColor = .brown
-        navigationItem.largeTitleDisplayMode = .never
     }
     
     func bindForReloadAndScroll() {
         viewModel.onReload = { [weak self] in
             DispatchQueue.main.async {
-//                self?.messagesCollectionView.reloadDataAndKeepOffset()
                 self?.messagesCollectionView.reloadData()
                 self?.messagesCollectionView.scrollToLastItem(animated: true)
             }
@@ -48,9 +43,7 @@ class ChatTableViewController: MessagesViewController {
     
     func bindForReloadAndKeepOffset() {
         viewModel.onReload2 = { [weak self] in
-//            DispatchQueue.main.async {
-                self?.messagesCollectionView.reloadDataAndKeepOffset()
-//            }
+            self?.messagesCollectionView.reloadDataAndKeepOffset()
         }
     }
     
@@ -67,13 +60,9 @@ class ChatTableViewController: MessagesViewController {
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
-//        messagesCollectionView.messageCellDelegate = self
-        
         scrollsToLastItemOnKeyboardBeginsEditing = true
         maintainPositionOnKeyboardFrameChanged = true
-        
         messagesCollectionView.refreshControl = refrechController
-        
         messageInputBar.delegate = self
     }
     
@@ -83,7 +72,6 @@ class ChatTableViewController: MessagesViewController {
             refrechController.endRefreshing()
         }
     }
-    
 }
 //MARK: - MessagesDataSource
 extension ChatTableViewController: MessagesDataSource {
@@ -98,28 +86,19 @@ extension ChatTableViewController: MessagesDataSource {
     func numberOfSections(in messagesCollectionView: MessageKit.MessagesCollectionView) -> Int {
         return viewModel.numberOfSections()
     }
-    
 }
 //MARK: - MessagesLayoutDelegate
-extension ChatTableViewController: MessagesLayoutDelegate {
-    
-    
-
-    
-}
+extension ChatTableViewController: MessagesLayoutDelegate {}
 //MARK: - MessagesDisplayDelegate
 extension ChatTableViewController: MessagesDisplayDelegate {
-        func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-            avatarView.initials = viewModel.configureAvatarView(indexPath: indexPath)
-//            avatarView.initials = "MN"
-//            avatarView.initials = viewModel.configureAvatarView(indexPath: indexPath)
-        }
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        avatarView.initials = viewModel.configureAvatarView(indexPath: indexPath)
+    }
 }
 
 extension ChatTableViewController: InputBarAccessoryViewDelegate {
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         viewModel.didPressSendButton(with: text)
-        //        text.removeAll()
         inputBar.inputTextView.text.removeAll()
     }
 }

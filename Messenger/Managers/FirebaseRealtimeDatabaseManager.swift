@@ -18,8 +18,6 @@ final class FirebaseRealtimeDatabaseManager {
     private init() {}
 
     private let database = FirebaseDatabase.Database.database().reference()
-//    private let conversationRef = Database.database().reference().child(Key.conversations)
-    //    private let database = FirebaseStorage.Storage.storage()
 }
 //MARK: - Account Management
 
@@ -96,10 +94,6 @@ extension FirebaseRealtimeDatabaseManager {
         let dict = conversation.dictionary
         let group = DispatchGroup()
         
-        if usersIsFetching {
-//            stopFetchingUsersFromDatabase()
-        }
-        
         DispatchQueue.global().async { [weak self] in
             group.enter()
             self?.database.child(Key.conversations).child(conversationID).setValue(dict, withCompletionBlock: { error, ref in
@@ -147,7 +141,6 @@ extension FirebaseRealtimeDatabaseManager {
                     }
                 })
             }
-            
             group.notify(queue: .main) {
                 completion(conversationID)
             }
@@ -174,7 +167,6 @@ extension FirebaseRealtimeDatabaseManager {
         let message = message.dictionary
         
         DispatchQueue.global().async { [weak self] in
-            
             self?.database.child(Key.conversations).child(conversationID).child(Key.messages).child(messageID).setValue(message) { error, ref in
                 if let error = error {
                     fatalError("Sending message error - \(error.localizedDescription)")
@@ -202,9 +194,7 @@ extension FirebaseRealtimeDatabaseManager {
         }
     /// Returns messages which are sorted and numerated
     func fetchMessages(conversationID: String, limit: UInt, completion: @escaping SimpleClosure<[Message]>) {
-        
         DispatchQueue.global().async { [weak self] in
-            
             self?.database.child(Key.conversations).child(conversationID).child(Key.messages).queryOrdered(byChild: Key.time).queryLimited(toLast: limit).observeSingleEvent(of: .value, with: { snapshot in
                 if let dict = snapshot.value as? DictDataType {
                     let messages = dict.map { try! Message(from: $0.value) }
@@ -217,7 +207,6 @@ extension FirebaseRealtimeDatabaseManager {
     /// Start fetching new messages with limit - 1
     func startFetchingNewMessage(conversationID: String, completion: @escaping SimpleClosure<Set<Message>>) {
         DispatchQueue.global().async { [weak self] in
-            
             self?.database.child(Key.conversations).child(conversationID).child(Key.messages).queryOrdered(byChild: Key.time).queryLimited(toLast: 1).observe(.value, with: { snapshot in
                 if let dict = snapshot.value as? DictDataType {
                     let message = dict.map { try! Message(from: $0.value) }
@@ -234,21 +223,6 @@ extension FirebaseRealtimeDatabaseManager {
         }
     }
     
-    
-//    func startFetchingNewMessages(conversationID: String, completion: @escaping SimpleClosure<[Message]>) {
-//        DispatchQueue.global().async { [weak self] in
-//            self?.conversationRef.child(conversationID).child(Key.messages).queryLimited(toFirst: 1).observe(.value, with: { snapshot in
-//
-//                if let dict = snapshot.value as? [String: [String: Any]] {
-//                    let messages = dict.map { try! Message(from: $0.value) }
-//                    DispatchQueue.main.async {
-//                        completion(messages)
-//                    }
-//                }
-//            })
-//        }
-//    }
-    
     /// Stopps fetching new messages from current chat
     func stopFetchingNewMessages(conversationID: String) {
         DispatchQueue.global().async { [weak self] in
@@ -256,12 +230,6 @@ extension FirebaseRealtimeDatabaseManager {
             print("Fetching conversation stopped")
         }
     }
-    
-//    func changeMessageStatus(conversationID: String) {
-//        DispatchQueue.global().async {
-//            database.child(Key.conversations).child(conversationID).child(<#T##pathString: String##String#>)
-//        }
-//    }
     ///Update conversation last action time with last message
     func updateLastActionTime(conversationID: String, time: TimeInterval, message: Message) {
         let messageToSave = message.dictionary
@@ -296,26 +264,10 @@ extension FirebaseRealtimeDatabaseManager {
             self?.database.child(Key.conversations).child(conversationID).child(Key.messages).child(messageID).child(Key.isRead).setValue(true)
         }
     }
-    
-    
-    
-
-    
-    
 }
 //MARK: BackGround and Foreground
 extension FirebaseRealtimeDatabaseManager {
     
-    func startSendingUserStatus() {
-//
-//        DispatchQueue.global().asyncAfter(deadline: .now() + 15) { [weak self] in
-//            if UserDefaults.standard.isLoggedIn {
-//                let user = UserDefaults.standard.getUserData()
-//                self?.database.child(Key.users).child(user.uid).child(Key.lastActionTime).setValue(Time.dateToString(date: Date()))
-//                self?.startSendingUserStatus()
-//            }
-//        }
-    }
     /// Sets indicatior in database that user is online
     func goOnline() {
         let user = UserDefaults.standard.getUserData()
@@ -323,10 +275,9 @@ extension FirebaseRealtimeDatabaseManager {
             if UserDefaults.standard.isLoggedIn {
                 self?.database.child(Key.users).child(user.uid).child(Key.isOnline).setValue(true)
             }
-
         }
     }
-    /// Sets indicatior in database that user is online
+    /// Sets indicatior in database that user is offnline
     func goOffline() {
         let user = UserDefaults.standard.getUserData()
         DispatchQueue.global().async { [weak self] in

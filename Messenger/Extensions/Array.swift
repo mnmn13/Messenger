@@ -9,7 +9,6 @@
 import Foundation
 
 extension Array {
-
     func mapToSet<T: Hashable>(_ transform: (Element) -> T) -> Set<T> {
         var result = Set<T>()
         for item in self {
@@ -17,5 +16,4 @@ extension Array {
         }
         return result
     }
-
 }

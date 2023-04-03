@@ -24,7 +24,6 @@ class SignInViewModel: SignInViewModelType {
     fileprivate let coordinator: SignInCoordinatorType
     private var userService: UserService
     private var progressHudService: ProgressHudService
-    //    private var userService: UserServiceType
     
     init(coordinator: SignInCoordinatorType, serviceHolder: ServiceHolder) {
         self.coordinator = coordinator
@@ -38,7 +37,6 @@ class SignInViewModel: SignInViewModelType {
     
     //actions
     func validate(email: String?, password: String?, view: UIView) -> String {
-        
         guard let email = email, !email.isEmpty, email.isEmail() else { return "Incorrect email" }
         guard let pass = password, !pass.isEmpty, pass.count >= 6 else { return "Incorrect password" }
         let alert: String = login(email: email, password: pass, view: view)
@@ -46,9 +44,8 @@ class SignInViewModel: SignInViewModelType {
     }
     
     func login(email: String, password: String, view: UIView) -> String {
-        var alertMassage = ""
+        let alertMassage = ""
         progressHudService.progressViewActivate(view: view)
-        
         userService.signIn(email: email, password: password) { [weak self] in
             guard let self = self else { return }
             self.progressHudService.progressViewDisable()

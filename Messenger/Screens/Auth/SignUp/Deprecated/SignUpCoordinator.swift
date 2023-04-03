@@ -11,14 +11,11 @@ import UIKit
 
 protocol SignUpCoordinatorTransitions: AnyObject {
     func userDidRegister()
-    func signIn()
 }
 
 protocol SignUpCoordinatorType {
     func userDidRegister()
-    func signIn()
 }
-
 
 class SignUpCoordinator {
     private weak var navigationController: UINavigationController?
@@ -31,7 +28,6 @@ class SignUpCoordinator {
         self.transitions = transitions
         self.serviceHolder = serviceHolder
         controller?.viewModel = SignUpViewModel(coordinator: self, serviceHolder: serviceHolder)
-        
     }
     
     deinit {
@@ -40,9 +36,7 @@ class SignUpCoordinator {
 
     func start() {
         if let controller = controller {
-//            controller.viewModel = SignUpViewModel(coordinator: self, serviceHolder: serviceHolder)
             navigationController?.pushViewController(controller, animated: true)
-//            navigationController?.setViewControllers([controller], animated: false)
         }
     }
 }
@@ -50,9 +44,5 @@ class SignUpCoordinator {
 extension SignUpCoordinator: SignUpCoordinatorType {
     func userDidRegister() {
         transitions?.userDidRegister()
-    }
-    
-    func signIn() {
-        transitions?.signIn()
     }
 }

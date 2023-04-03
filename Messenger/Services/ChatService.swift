@@ -22,10 +22,7 @@ class ChatService: Service {
     
     ///Creates conversation by Conversation model with first message
     func createConversation(usersIsFetching: Bool, currentUser: User, companion: User, text: String, completion: @escaping SimpleClosure<String>) {
-        
-//        let message = Message(senderID: currentUser.userInfo.uid, text: text, time: Time.dateToString(date: Date()))
         let message = Message(senderID: currentUser.userInfo.uid, text: text, time: Date().timeIntervalSince1970)
-        
         FirebaseRealtimeDatabaseManager.shared.createConversation(usersIsFetching: usersIsFetching, currentUser: currentUser, companion: companion, message: message) { conversationID in
             completion(conversationID)
         }
@@ -34,7 +31,6 @@ class ChatService: Service {
     func didChatExists(currentUser: User, companion: User, completion: SimpleClosure<String>) -> Bool {
 
         guard let currentUserConversations = currentUser.conversations, !currentUserConversations.isEmpty else { return false }
-        
         guard let companionConversations = companion.conversations, !companionConversations.isEmpty else { return false }
 
         let commonConversation: Set<String> = currentUserConversations.mapToSet { $0 }.intersection(companionConversations.mapToSet { $0 })
@@ -44,29 +40,17 @@ class ChatService: Service {
     }
     /// Starts observing conversation for new messages by Conversation model
     func fetchChat(conversationID: String, completion: @escaping SimpleClosure<Conversation>) {
-        
         FirebaseRealtimeDatabaseManager.shared.fetchChat(conversationID: conversationID) { conversation in
             completion(conversation)
         }
     }
     /// Sends message to firebase
     func sendMessage(conversationID: String, text: String, sender: String, completion: @escaping EmptyClosure) {
-        
-//        let message = Message(senderID: sender, text: text, time: Time.dateToString(date: Date()))
         let message = Message(senderID: sender, text: text, time: Date().timeIntervalSince1970)
-        
         FirebaseRealtimeDatabaseManager.shared.sendMessage(conversationID: conversationID, message: message) {
-//            completion()
         }
     }
-    /// Start fetching new messages
-    @available(*, deprecated, message: "No More Available")
-    func startFetchingNewMessages(conversationID: String, completion: @escaping SimpleClosure<Set<Message>>) {
-//        FirebaseRealtimeDatabaseManager.shared.startFetchingNewMessages(conversationID: conversationID) { messages in
-////            self?.callBackNewMessage?(messages)
-//            completion(messages)
-//        }
-    }
+
     ///  Stop fetching new messages
     func stopFetchingNewMessages(conversationID: String) {
         FirebaseRealtimeDatabaseManager.shared.stopFetchingNewMessages(conversationID: conversationID)
@@ -118,6 +102,4 @@ class ChatService: Service {
     func stopFetchingNewMessageslimit(conversationID: String) {
         FirebaseRealtimeDatabaseManager.shared.stopFetchingNewMessagesLimit(conversationID: conversationID)
     }
-    
-    
 }

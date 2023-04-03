@@ -17,13 +17,11 @@ class AppCoordinator {
     
     init(window: UIWindow) {
         self.window = window
-        startLocationServices()
         startServices()
         start()
     }
     
     private func start() {
-        
         if UserDefaults.standard.isLoggedIn {
             enterApp()
         } else {
@@ -36,23 +34,19 @@ class AppCoordinator {
         authCoordinator?.start()
         tabBarCoordinator = nil
     }
+    
     private func enterApp() {
-        
         tabBarCoordinator = TabBarCoordinator(window: window, transitions: self, serviceHolder: serviceHolder)
         tabBarCoordinator?.start()
         authCoordinator = nil
-    }
-    
-    private func startUserServices() {
-        
     }
 }
 
 extension AppCoordinator: AuthFlowCoordinatorTransitions {
     func userDidLogin() {
-        
         enterApp()
     }
+    
     func startWithoutLogin() {
         enterApp()
     }
@@ -64,21 +58,11 @@ extension AppCoordinator: TabbarCoordinatorTransitions {
 }
 //MARK: - Services routine
 extension AppCoordinator {
-    
     private func startServices() {
-//        serviceHolder.add(NetworkService.self, for: NetworkService())
         serviceHolder.add(UserService.self, for: UserService())
         serviceHolder.add(ProgressHudService.self, for: ProgressHudService())
         serviceHolder.add(ChatService.self, for: ChatService())
-//        serviceHolder.add(LocalSearchService.self, for: LocalSearchService())
-
+        serviceHolder.add(OpenAIService.self, for: OpenAIService())
     }
-    
-    private func startLocationServices() {
-        
-//        serviceHolder.add(UserLocationService.self, for: UserLocationService())
-        
-    }
-    
 }
 
