@@ -5,7 +5,11 @@
 //  Created by MN on 17.11.2022.
 //
 
+/*
+
+
 import UIKit
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -16,7 +20,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+//        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        window = UIWindow(windowScene: windowScene)
+        
+        
+        if FirebaseAuth.Auth.auth().currentUser == nil {
+            
+            let storyboard = UIStoryboard(name: "Login", bundle: .main)
+            let vc = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
+            let nav = UINavigationController(rootViewController: vc)
+            window?.rootViewController = nav
+        } else {
+            window?.rootViewController = TabbarController()
+        }
+
+        window?.makeKeyAndVisible()
+
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -49,4 +70,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
+//MARK: - keyWindow
+extension UIApplication {
+    var keyWindow: UIWindow? {
+        // Get connected scenes
+        return UIApplication.shared.connectedScenes
+            // Keep only active scenes, onscreen and visible to the user
+            .filter { $0.activationState == .foregroundActive }
+            // Keep only the first `UIWindowScene`
+            .first(where: { $0 is UIWindowScene })
+            // Get its associated windows
+            .flatMap({ $0 as? UIWindowScene })?.windows
+            // Finally, keep only the key window
+            .first(where: \.isKeyWindow)
+    }
+}
 
+*/
